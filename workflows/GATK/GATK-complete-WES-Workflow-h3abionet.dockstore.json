@@ -1,0 +1,90 @@
+{
+   "bwa_read_group" : "@RG\tID:1\tPL:ILLUMINA\tPU:pu\tLB:group1\tSM:SAMPLEID",
+   "createIndex_MarkDuplicates" : "true",
+   "samtools-view-sambam" : "-Sb",
+   "outputFileName_MarkDuplicates" : "MarkDuplicates-2017-04-23.bam",
+   "snpf_nodownload" : true,
+   "output_RefDictionaryFile" : "genome.fa.dict",
+   "samtools-view-isbam" : true,
+   "reads" : [
+      {
+         "path" : "https://s3-us-west-2.amazonaws.com/bd2k-test-data/h3abionet_gatk_workflow_data/NA12878.R1.fastq.gz",
+         "class" : "File"
+      },
+      {
+         "path" : "https://s3-us-west-2.amazonaws.com/bd2k-test-data/h3abionet_gatk_workflow_data/NA12878.R2.fastq.gz",
+         "class" : "File"
+      }
+   ],
+   "known_variant_db" : [
+      {
+         "class" : "File",
+         "path" : "https://s3-us-west-2.amazonaws.com/bd2k-test-data/h3abionet_gatk_workflow_data/dbsnp_138.hg19.excluding_sites_after_129.vcf"
+      },
+      {
+         "class" : "File",
+         "path" : "https://s3-us-west-2.amazonaws.com/bd2k-test-data/h3abionet_gatk_workflow_data/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
+      },
+      {
+         "path" : "https://s3-us-west-2.amazonaws.com/bd2k-test-data/h3abionet_gatk_workflow_data/1000G_phase1.indels.hg19.sites.vcf",
+         "class" : "File"
+      }
+   ],
+   "gatk_threads" : 8,
+   "bwa_threads" : 16,
+   "bwa_output_name" : "bwa-mem-2017-04-23.sam",
+   "outputFileName_HaplotypeCaller" : "HaplotypeCaller-2017-04-23.vcf",
+   "samtools-index-bai" : true,
+   "output_samtools-view" : "samtools-view-2017-04-23.bam",
+   "outputFileName_PrintReads" : "PrintReads-2017-04-23.bam",
+   "resource_hapmap" : {
+      "class" : "File",
+      "path" : "https://s3-us-west-2.amazonaws.com/bd2k-test-data/h3abionet_gatk_workflow_data/hapmap_3.3.hg19.sites.vcf"
+   },
+   "resource_mills" : {
+      "path" : "https://s3-us-west-2.amazonaws.com/bd2k-test-data/h3abionet_gatk_workflow_data/1000G_phase1.snps.high_confidence.hg19.sites.vcf",
+      "class" : "File"
+   },
+   "covariate" : [
+      "CycleCovariate",
+      "ContextCovariate"
+   ],
+   "dbsnp" : {
+      "path" : "https://s3-us-west-2.amazonaws.com/bd2k-test-data/h3abionet_gatk_workflow_data/dbsnp_138.hg19.excluding_sites_after_129.vcf",
+      "class" : "File"
+   },
+   "tmpdir" : "./tmp",
+   "readSorted_MarkDuplicates" : "true",
+   "metricsFile_MarkDuplicates" : "metricsFile-markDups-2017-04-23.metrics",
+   "output_samtools-sort" : "samtools-sort-2017-04-23.bam",
+   "uncompressed_reference" : {
+      "path" : "https://s3-us-west-2.amazonaws.com/bd2k-test-data/h3abionet_gatk_workflow_data/genome.fa",
+      "class" : "File"
+   },
+   "outputFileName_RealignTargetCreator" : "RealignTargetCreator-2017-04-23.intervals",
+   "reference" : {
+      "path" : "https://s3-us-west-2.amazonaws.com/bd2k-test-data/h3abionet_gatk_workflow_data/genome.fa",
+      "class" : "File"
+   },
+   "snpf_genome" : "hg19",
+   "snpf_data_dir" : {
+      "location" : "https://s3-us-west-2.amazonaws.com/bd2k-test-data/h3abionet_gatk_workflow_data/data",
+      "class" : "Directory"
+   },
+   "outputFileName_IndelRealigner" : "IndelRealigner-2017-04-23.bam",
+   "depth_omitDepthOutputAtEachBase" : true,
+   "resource_omni" : {
+      "class" : "File",
+      "path" : "https://s3-us-west-2.amazonaws.com/bd2k-test-data/h3abionet_gatk_workflow_data/1000G_omni2.5.hg19.sites.vcf"
+   },
+   "depth_omitIntervalStatistics" : true,
+   "depth_outputfile_DepthOfCoverage" : "sample_report",
+   "outputFileName_BaseRecalibrator" : "BaseRecalibrator-2017-04-23.table",
+   "resource_dbsnp" : {
+      "path" : "https://s3-us-west-2.amazonaws.com/bd2k-test-data/h3abionet_gatk_workflow_data/dbsnp_138.hg19.excluding_sites_after_129.vcf",
+      "class" : "File"
+   },
+   "removeDuplicates_MarkDuplicates" : "true",
+   "samtools_threads" : 4,
+   "filter_expression": "'QD < 2.0 || FS > 200.0 || ReadPosRankSum < -20.0'"
+}
