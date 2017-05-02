@@ -39,7 +39,15 @@ Alternatively, you can use the Dockstore command line, see the Dockstore [instal
 
 # Sample Data
 
-TODO
+We use two test datasets for this workflow.  The first is a small NA12878 exome that takes about 8 hours to run on a 16 core box.
+
+## Exome
+
+GIAB provides an exome from Garvin for NA12878 which is available using the `test/prepare_test.sh` script.  See [here](ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/data/NA12878/Garvan_NA12878_HG001_HiSeq_Exome/) to download fastq pairs.
+
+## Whole Genome
+
+GIAB also provides a 300x coverage genome for NA12878 from the Garvin, see [here](ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/data/NA12878/NIST_NA12878_HG001_HiSeq_300x/) to download fastq pairs.
 
 # Reference Files
 The reference files are pulled from the GATK bundle v2.8 (hg19). The used files are:
@@ -49,6 +57,8 @@ The reference files are pulled from the GATK bundle v2.8 (hg19). The used files 
   - 1000 genome SNPs and indels
   - 1000 genome Omni
   - Mills 1000 genome gold standard variants
+
+These can be downloaded with the `test/prepare_test.sh` script.
 
 # Running
 
