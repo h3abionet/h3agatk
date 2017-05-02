@@ -140,7 +140,9 @@ sys     2m35.100s
 
 # Release
 
-Dockstore...
+Releases can be found on the GitHub [releases](https://github.com/h3abionet/h3agatk/releases) page.
+
+The workflow is also published to the Dockstore [here](https://dockstore.org/workflows/h3abionet/h3agatk).
 
 # Workflow Tool Details
 
