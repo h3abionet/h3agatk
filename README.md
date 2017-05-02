@@ -47,7 +47,7 @@ GIAB provides an exome from Garvin for NA12878 which is available using the `tes
 
 ## Whole Genome
 
-GIAB also provides a 300x coverage genome for NA12878 from the Garvin, see [here](ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/data/NA12878/NIST_NA12878_HG001_HiSeq_300x/) to download fastq pairs.
+GIAB also provides a 300x coverage genome for NA12878 from the Garvin, see ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/data/NA12878/NIST_NA12878_HG001_HiSeq_300x/ to download fastq pairs.
 
 # Reference Files
 
