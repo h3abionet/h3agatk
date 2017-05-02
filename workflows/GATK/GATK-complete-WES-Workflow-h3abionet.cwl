@@ -18,7 +18,8 @@ doc: |
 
   # Workflow Summary
 
-  ![pipeline](https://raw.githubusercontent.com/h3abionet/h3agatk/master/workflows/GATK/gatk_germline.png =100x)
+  ![pipeline](https://raw.githubusercontent.com/h3abionet/h3agatk/master/workflows/GATK/gatk_germline.png)
+  <img src="https://raw.githubusercontent.com/h3abionet/h3agatk/master/workflows/GATK/gatk_germline.png" width="200">
 
   # Workflow Tool Details
 
