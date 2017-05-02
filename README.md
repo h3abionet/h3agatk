@@ -43,7 +43,7 @@ We use two test datasets for this workflow.  The first is a small NA12878 exome 
 
 ## Exome
 
-GIAB provides an exome from Garvin for NA12878 which is available using the `test/prepare_test.sh` script.  See [here](ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/data/NA12878/Garvan_NA12878_HG001_HiSeq_Exome/) to download fastq pairs.
+GIAB provides an exome from Garvin for NA12878 which is available using the `test/prepare_test.sh` script.  See ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/data/NA12878/Garvan_NA12878_HG001_HiSeq_Exome/ to download fastq pairs.
 
 ## Whole Genome
 
