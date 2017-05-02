@@ -7,6 +7,15 @@ More details can be found in our [Google doc](https://docs.google.com/document/d
 
 See our [Trello board](https://trello.com/b/pcWKqbXv/stream-b-ngs-variant-calling-illumina) for more information about our development process.
 
+## Authors
+
+* Michael Crusoe and the CWL tool/workflow contributors
+* Hocine Bendou
+* Mustafa
+* Peter van Heusden
+* Phelelani Mpangase
+* Yassine Souilmi
+
 # Workflow Summary
 
 ![pipeline](workflows/GATK/gatk_germline.png)
@@ -66,7 +75,7 @@ These can be downloaded with the `test/prepare_test.sh` script.
 We use the CWL reference implementation with the `cwltool`.  The following shows how to run the whole exome workflow with a working directory of `/data/working` and output going to `/data/output`. This assumes you have downloaded the exome test data and reference files using the `test/prepare_test.sh` script.
 
 ```
-cwltool --debug --tmpdir-prefix /data/working --outdir /data/output --tmp-outdir-prefix /data/working GATK-complete-WES-Workflow-h3abionet.cwl GATK-complete-WES-Workflow-h3abionet.json  > >(tee stdout.exome.log) 2> >(tee stderr.exome.log >&2) 
+cwltool --debug --tmpdir-prefix /data/working --outdir /data/output --tmp-outdir-prefix /data/working GATK-complete-WES-Workflow-h3abionet.cwl GATK-complete-WES-Workflow-h3abionet.json  > >(tee stdout.exome.log) 2> >(tee stderr.exome.log >&2)
 ```
 
 Alternatively you can use the Dockstore command line to execute the workflow.

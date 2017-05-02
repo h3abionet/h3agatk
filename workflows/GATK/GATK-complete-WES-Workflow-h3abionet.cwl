@@ -8,6 +8,8 @@ requirements:
   - class: InlineJavascriptRequirement
   - class: SubworkflowFeatureRequirement
 
+doc: ../../README.md
+
 inputs:
   reference:
     type: File
