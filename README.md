@@ -63,32 +63,80 @@ These can be downloaded with the `test/prepare_test.sh` script.
 
 # Running
 
-We use the CWL reference implementation with the `cwltool`.
+We use the CWL reference implementation with the `cwltool`.  The following shows how to run the whole exome workflow with a working directory of `/data/working` and output going to `/data/output`. This assumes you have downloaded the exome test data and reference files using the `test/prepare_test.sh` script.
+
 ```
-    cwltool --cachedir <path_to_tmp_dir> --debug --non-strict --tmpdir-prefix  GATK-complete-Workflow-h3abionet.cwl GATK-complete-Workflow-copy-h3abionet.json
+cwltool --debug --tmpdir-prefix /data/working --outdir /data/output --tmp-outdir-prefix /data/working GATK-complete-WES-Workflow-h3abionet.cwl GATK-complete-WES-Workflow-h3abionet.json &> exome.log
 ```
 
-Alternatively you can use the Dockstore command line.
+Alternatively you can use the Dockstore command line to execute the workflow.
 
 # Output
 
-Here's the sample output.
+Here's the sample output, your output paths will differ depending on your system.
 
 ```
--rw-r--r-- 1 ubuntu ubuntu 497M Aug 26 15:19 samtools-view-2016-08-04.bam
--rw-r--r-- 1 ubuntu ubuntu 403M Aug 26 15:19 samtools-sort-2016-08-04.bam
--rw-r--r-- 1 ubuntu ubuntu 9.3M Aug 26 15:19 HaplotypeCaller-2016-08-04.vcf
--rw-r--r-- 1 ubuntu ubuntu 2.0M Aug 26 15:19 bamstats_report.zip
--rw-r--r-- 1 ubuntu ubuntu 875K Aug 26 15:19 BaseRecalibrator-2016-08-04.table
--rw-r--r-- 1 ubuntu ubuntu 4.2M Aug 26 15:19 samtools-sort-2016-08-04.bai
--rw-rw-r-- 1 ubuntu ubuntu 1.6G Aug 26 15:19 bwa-mem-2016-08-04.sam
--rw-r--r-- 1 ubuntu ubuntu 862M Aug 26 15:19 PrintReads-2016-08-04.bam
--rw-r--r-- 1 ubuntu ubuntu  81M Aug 26 15:19 RealignTargetCreator-2016-08-04.intervals
--rw-r--r-- 1 ubuntu ubuntu 408M Aug 26 15:19 MarkDuplicates-2016-08-04.bam
--rw-r--r-- 1 ubuntu ubuntu 414M Aug 26 15:19 IndelRealigner-2016-08-04.bam
--rw-r--r-- 1 ubuntu ubuntu 5.2M Aug 26 15:19 MarkDuplicates-2016-08-04.bai
--rw-r--r-- 1 ubuntu ubuntu  13K Aug 26 15:19 genome.fa.dict
+{
+    "output_printReads": {
+        "checksum": "sha1$ae24bdbb2aa253a217f181af13e91993f3df2d0c",
+        "basename": "PrintReads-2017-04-23.bam",
+        "location": "file:///mnt2/PrintReads-2017-04-23.bam",
+        "path": "/mnt2/PrintReads-2017-04-23.bam",
+        "class": "File",
+        "size": 18211753946
+    },
+    "output_SnpVQSR_annotated_snps": {
+        "checksum": "sha1$b79dd0de9da7b2ea13c8129c2ad2e6fd0f1c79ff",
+        "basename": "HaplotypeCaller-2017-04-23.SNP.vqsr.ann.vcf",
+        "location": "file:///mnt2/HaplotypeCaller-2017-04-23.SNP.vqsr.ann.vcf",
+        "path": "/mnt2/HaplotypeCaller-2017-04-23.SNP.vqsr.ann.vcf",
+        "class": "File",
+        "size": 214860597
+    },
+    "output_IndelFilter_annotated_indels": {
+        "checksum": "sha1$3cdd41a1b6c683813e29822854981431b74793e4",
+        "basename": "filtered.indels.ann.vcf",
+        "location": "file:///mnt2/filtered.indels.ann.vcf",
+        "path": "/mnt2/filtered.indels.ann.vcf",
+        "class": "File",
+        "size": 31696522
+    },
+    "output_bamstat": {
+        "format": "http://edamontology.org/format_3615",
+        "checksum": "sha1$0cbb6ba1fc6182bd9c6d279fed07993ca2fee86e",
+        "basename": "bamstats_report.zip",
+        "location": "file:///mnt2/bamstats_report.zip",
+        "path": "/mnt2/bamstats_report.zip",
+        "class": "File",
+        "size": 2507012
+    },
+    "output_SnpVQSR_recal_File": {
+        "checksum": "sha1$861151b0c967466ce914bf1e2d09dd6e77030c02",
+        "basename": "vqsr_recal.snps.recal",
+        "location": "file:///mnt2/vqsr_recal.snps.recal",
+        "path": "/mnt2/vqsr_recal.snps.recal",
+        "class": "File",
+        "size": 31796999
+    },
+    "output_HaplotypeCaller": {
+        "checksum": "sha1$9a8264fc177950bfdec1b8e6aaf3484458166581",
+        "basename": "HaplotypeCaller-2017-04-23.vcf",
+        "location": "file:///mnt2/HaplotypeCaller-2017-04-23.vcf",
+        "path": "/mnt2/HaplotypeCaller-2017-04-23.vcf",
+        "class": "File",
+        "size": 93031041
+    }
+}
 ```
+
+With the runtime being approximately 9 hours.
+
+```
+real    522m25.905s
+user    3m49.676s
+sys     2m35.100s
+```
+
 
 # Release
 
