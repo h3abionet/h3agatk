@@ -68,7 +68,7 @@
    },
    "snpf_genome" : "hg19",
    "snpf_data_dir" : {
-      "location" : "../../test/snpEff_hg19/data",
+      "location" : "../../test/data",
       "class" : "Directory"
    },
    "outputFileName_IndelRealigner" : "IndelRealigner-2017-04-23.bam",
