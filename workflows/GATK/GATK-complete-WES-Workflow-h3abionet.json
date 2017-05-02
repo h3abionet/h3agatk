@@ -1,5 +1,5 @@
 {
-   "bwa_read_group" : '@RG\tID:1\tPL:ILLUMINA\tPU:pu\tLB:group1\tSM:SAMPLEID',
+   "bwa_read_group" : "@RG\tID:1\tPL:ILLUMINA\tPU:pu\tLB:group1\tSM:SAMPLEID",
    "createIndex_MarkDuplicates" : "true",
    "samtools-view-sambam" : "-Sb",
    "outputFileName_MarkDuplicates" : "MarkDuplicates-2017-04-23.bam",
@@ -8,25 +8,25 @@
    "samtools-view-isbam" : true,
    "reads" : [
       {
-         "path" : "/mnt/fastq/NA12878.R1.fastq.gz",
+         "path" : "../../test/NA12878.R1.fastq.gz",
          "class" : "File"
       },
       {
-         "path" : "/mnt/fastq/NA12878.R2.fastq.gz",
+         "path" : "../../test/NA12878.R2.fastq.gz",
          "class" : "File"
       }
    ],
    "known_variant_db" : [
       {
          "class" : "File",
-         "path" : "dbsnp_138.vcf"
+         "path" : "../../test/dbsnp_138.hg19.excluding_sites_after_129.vcf"
       },
       {
          "class" : "File",
-         "path" : "Mills_and_1000G_gold_st.vcf"
+         "path" : "../../test/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
       },
       {
-         "path" : "1000G_phase1.indels.hg19.vcf",
+         "path" : "../../test/1000G_phase1.indels.hg19.sites.vcf",
          "class" : "File"
       }
    ],
@@ -39,10 +39,10 @@
    "outputFileName_PrintReads" : "PrintReads-2017-04-23.bam",
    "resource_hapmap" : {
       "class" : "File",
-      "path" : "hapmap_3.3.hg19.sites.vcf"
+      "path" : "../../test/hapmap_3.3.hg19.sites.vcf"
    },
    "resource_mills" : {
-      "path" : "1000G_phase1.snps.high_confidence.hg19.sites.vcf",
+      "path" : "../../test/1000G_phase1.snps.high_confidence.hg19.sites.vcf",
       "class" : "File"
    },
    "covariate" : [
@@ -50,7 +50,7 @@
       "ContextCovariate"
    ],
    "dbsnp" : {
-      "path" : "dbsnp_138.vcf",
+      "path" : "../../test/dbsnp_138.hg19.excluding_sites_after_129.vcf",
       "class" : "File"
    },
    "tmpdir" : "./tmp",
@@ -58,30 +58,30 @@
    "metricsFile_MarkDuplicates" : "metricsFile-markDups-2017-04-23.metrics",
    "output_samtools-sort" : "samtools-sort-2017-04-23.bam",
    "uncompressed_reference" : {
-      "path" : "genome.fa",
+      "path" : "../../test/genome.fa",
       "class" : "File"
    },
    "outputFileName_RealignTargetCreator" : "RealignTargetCreator-2017-04-23.intervals",
    "reference" : {
-      "path" : "genome.fa",
+      "path" : "../../test/genome.fa",
       "class" : "File"
    },
    "snpf_genome" : "hg19",
    "snpf_data_dir" : {
-      "location" : "/data_small/snpEff_hg19/data",
+      "location" : "../../test/snpEff_hg19/data",
       "class" : "Directory"
    },
    "outputFileName_IndelRealigner" : "IndelRealigner-2017-04-23.bam",
    "depth_omitDepthOutputAtEachBase" : true,
    "resource_omni" : {
       "class" : "File",
-      "path" : "1000G_omni2.5.hg19.sites.vcf"
+      "path" : "../../test/1000G_omni2.5.hg19.sites.vcf"
    },
    "depth_omitIntervalStatistics" : true,
    "depth_outputfile_DepthOfCoverage" : "sample_report",
    "outputFileName_BaseRecalibrator" : "BaseRecalibrator-2017-04-23.table",
    "resource_dbsnp" : {
-      "path" : "dbsnp_138.hg19.vcf",
+      "path" : "../../test/dbsnp_138.hg19.excluding_sites_after_129.vcf",
       "class" : "File"
    },
    "removeDuplicates_MarkDuplicates" : "true",
