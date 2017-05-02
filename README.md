@@ -1,4 +1,4 @@
-# GATK h3abionet pipeline docs
+# H3ABioNet GATK Germline Workflow
 
 # Overview
 A [GATK best-practices](https://software.broadinstitute.org/gatk/best-practices/bp_3step.php?case=GermShortWGS) germline workflow designed to work with GATK 3.5  (Van der Auwera et al., 2013).
