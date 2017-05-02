@@ -8,7 +8,18 @@ requirements:
   - class: InlineJavascriptRequirement
   - class: SubworkflowFeatureRequirement
 
-doc: ../../README.md
+doc: |
+  # H3ABioNet GATK Germline Workflow
+
+  # Overview
+  A [GATK best-practices](https://software.broadinstitute.org/gatk/best-practices/bp_3step.php?case=GermShortWGS) germline workflow designed to work with GATK 3.5  (Van der Auwera et al., 2013).
+
+  For more information see our [GitHub](https://github.com/h3abionet/h3agatk) site.
+
+  # Workflow Summary
+
+  ![pipeline](https://raw.githubusercontent.com/h3abionet/h3agatk/master/workflows/GATK/gatk_germline.png)
+
 
 inputs:
   reference:
