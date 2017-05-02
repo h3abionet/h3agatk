@@ -48,7 +48,7 @@ doc: |
 
   ## GATK
   [Genome Analysis Tool Kit](https://software.broadinstitute.org/gatk) refered to as GATK (DePristo et al., 2011) is used to process the data throught multiple steps as described by the [GATK best-practices](https://software.broadinstitute.org/gatk/best-practices/bp_3step.php?case=GermShortWGS) (i.e. figure bellow).
-  ![GATK best-practices pipeline](https://software.broadinstitute.org/gatk/img/BP_workflow_3.6.png)
+  ![GATK best-practices pipeline](https://raw.githubusercontent.com/h3abionet/h3agatk/master/workflows/GATK/gatk.png)
   The GATK steps are the following:
   	1. Indel Realignment:
   		1. [Realign Target Creator](https://software.broadinstitute.org/gatk/documentation/tooldocs/org_broadinstitute_gatk_tools_walkers_indels_RealignerTargetCreator.php)
