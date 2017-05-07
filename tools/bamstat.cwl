@@ -48,7 +48,6 @@ hints:
   coresMin: 1
   ramMin: 4092
   outdirMin: 512000
-  description: the process requires at least 4G of RAM
 
 inputs:
   bam_input:
