@@ -28,7 +28,7 @@ The workflow relies on the following requirements.
 
 ## System Resources
 
-We have tested on a 16 core, 128GB+ Ubuntu VM running on Azure.  Similar systems should work.  We recommend 1TB+ disk space if processing a 30x coverage genome, about 500G if processing an exome.
+We have tested on a 16 core, 128GB+ Ubuntu VM running on Azure.  Similar systems should work.  We recommend 1TB+ disk space if processing a 30x coverage genome, about 500G if processing an exome.  We use the directories `/data/working` and `/data/output` in the examples below but whatever you choose make sure these are on volumes with plenty of space free.
 
 ## System Services
 
