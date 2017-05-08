@@ -9,11 +9,12 @@ See our [Trello board](https://trello.com/b/pcWKqbXv/stream-b-ngs-variant-callin
 
 ## Authors
 
-* Michael Crusoe and the CWL tool/workflow contributors
+* Mustafa Alghali
 * Hocine Bendou
-* Mustafa
+* Michael Crusoe and the CWL tool/workflow contributors (see individual CWL docs for authorship)
 * Peter van Heusden
 * Phelelani Mpangase
+* Brian O'Connor
 * Yassine Souilmi
 
 # Workflow Summary
@@ -21,6 +22,8 @@ See our [Trello board](https://trello.com/b/pcWKqbXv/stream-b-ngs-variant-callin
 ![pipeline](workflows/GATK/gatk_germline.png)
 
 Original diagram document  [here](https://docs.google.com/drawings/d/18OllHlrp4StnNKY1IGB7svt6fMP32-SylRsYOk64QmM/edit).
+
+Gray items can be optionally executed outside of the workflow as stand-alone tools.  Indels can be recalibrated with VQSR or simply filtered depending on the number of indels being analyzed.
 
 # Dependencies
 
@@ -138,14 +141,13 @@ Here's the sample output, your output paths will differ depending on your system
 }
 ```
 
-With the runtime being approximately 9 hours.
+With the runtime being approximately 7 hours on a 16 core VM.
 
 ```
-real    522m25.905s
-user    3m49.676s
-sys     2m35.100s
+real    407m37.153s
+user    3m37.612s
+sys     2m16.264s
 ```
-
 
 # Release
 
