@@ -86,5 +86,6 @@
    },
    "removeDuplicates_MarkDuplicates" : "true",
    "samtools_threads" : 4,
-   "filter_expression": "'QD < 2.0 || FS > 200.0 || ReadPosRankSum < -20.0'"
+   "filter_expression": "'QD < 2.0 || FS > 200.0 || ReadPosRankSum < -20.0'",
+   "snpeff_java_mem_opts": ["-Xmx4G", "-Xms2G"]
 }
