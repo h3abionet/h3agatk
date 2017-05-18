@@ -218,6 +218,10 @@ inputs:
   resource_dbsnp:
     type: File
 
+  snpeff_java_mem_opts:
+    type: string[]?
+    doc: memory options passed to the java command run for snpEff
+
 outputs:
 
   output_bamstat:
@@ -294,6 +298,7 @@ steps:
       resource_hapmap: resource_hapmap
       resource_omni: resource_omni
       resource_dbsnp: resource_dbsnp
+      snpeff_java_mem_opts: snpeff_java_mem_opts
     out: [ recal_File, annotated_snps ]
 
   IndelFilter:
@@ -309,4 +314,5 @@ steps:
       resource_omni: resource_omni
       resource_dbsnp: resource_dbsnp
       filter_expression: filter_expression
+      snpeff_java_mem_opts: snpeff_java_mem_opts
     out: [ annotated_indels ]

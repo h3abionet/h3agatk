@@ -44,6 +44,9 @@ inputs:
   resource_dbsnp:
     type: File
 
+  snpeff_java_mem_opts:
+      type: string[]?
+
 outputs:
   recal_File:
     type: File
@@ -86,4 +89,5 @@ steps:
       variant_calling_file: apply_recalibration_indels/vqsr_vcf
       nodownload: snpf_nodownload
       data_dir: snpf_data_dir
+      java_mem_opts: snpeff_java_mem_opts
     out: [ annotated_vcf ]
