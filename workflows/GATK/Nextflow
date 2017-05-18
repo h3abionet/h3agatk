@@ -1,0 +1,55 @@
+#!/usr/bin/env nextflow
+
+params.fq1 = "/home/abraham/human_variant/input_files/UCSC_chr1_WithSyntheticVariants_And_ERR250949_Variants_Exome_50X_NEAT_read1.fq"
+params.fq2 = "/home/abraham/human_variant/input_files/UCSC_chr1_WithSyntheticVariants_And_ERR250949_Variants_Exome_50X_NEAT_read2.fq"
+params.ref = "/home/abraham/human_variant/reference_files/hg38.fa"
+
+fastq1 = file(params.fq1)
+fastq2 = file(params.fq2)
+refgenome = file(params.ref)
+
+process fastQC {
+
+  input:
+  file 'input1.fq' from fastq1
+  file 'input2.fq' from fastq2
+  
+  Output:
+  file 'qcreport1' into qcreports
+  file 'qcreport2' into qcreports
+  
+  """
+  """
+
+}
+
+process AdaptorTrim {
+
+  input:
+  file 'input1.fq' from fastq1
+  file 'input2.fq' from fastq2
+  
+  Output:
+  file 'adapttrimmed1' into adaptortrimmed
+  file 'adapttrimmed2' into adaptortrimmed
+  
+  """
+  """
+
+}
+
+process Qualitytrim {
+
+  input:
+  file 'adapttrimmed1' into adaptortrimmed
+  file 'adapttrimmed2' into adaptortrimmed
+  
+  Output:
+  file 'qualitytrimmed1' into qualitytrimmed
+  file 'qualitytrimmed2' into qualitytrimmed
+  
+  """
+  """
+
+}
+
