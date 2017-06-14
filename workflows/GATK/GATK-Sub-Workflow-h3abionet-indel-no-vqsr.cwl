@@ -58,6 +58,9 @@ inputs:
   resource_dbsnp:
     type: File
 
+  snpeff_java_mem_opts:
+    type: string[]?
+
 outputs:
 
   annotated_indels:
@@ -91,4 +94,5 @@ steps:
       variant_calling_file: filter_indels/output_File
       nodownload: snpf_nodownload
       data_dir: snpf_data_dir
+      java_mem_opts: snpeff_java_mem_opts
     out: [ annotated_vcf ]

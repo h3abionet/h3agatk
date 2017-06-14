@@ -5,7 +5,7 @@ class: CommandLineTool
 
 hints:
   DockerRequirement:
-    dockerPull: quay.io/snpeff:4.3
+    dockerPull: quay.io/biocontainers/snpeff:4.3.1m--0
 
 requirements:
   - class: InlineJavascriptRequirement
@@ -60,6 +60,11 @@ inputs:
     type: File
     inputBinding:
       position: 8
+
+  java_mem_opts:
+    type: string[]?
+    inputBinding:
+      position: 9
 
 stdout: $(inputs.variant_calling_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '.ann.vcf')
 
