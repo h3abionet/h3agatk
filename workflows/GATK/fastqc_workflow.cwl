@@ -14,7 +14,7 @@ outputs:
 
 steps:
   fastq:
-    run: fastqc.cwl
+    run: ../../tools/fastqc.cwl
     in:
       fastqFile: reads1
     out: [zippedFile,report]
