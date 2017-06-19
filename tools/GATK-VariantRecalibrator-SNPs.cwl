@@ -84,17 +84,17 @@ inputs:
       - .idx
     inputBinding:
       position: 9
-      prefix: "-resource:omni,known=false,training=true,truth=false,prior=12.0"
+      prefix: "-resource:omni,known=false,training=true,truth=true,prior=12.0"
     doc: omni reference data
 
- # resource_1kg:
- #   type: File
- #   secondaryFiles:
- #     - .idx
- #   inputBinding:
- #     position: 10
- #     prefix: "-resource:1000G,known=false,training=true,truth=false,prior=10.0"
- #   doc: 1000 genome reference data
+  resource_1kg:
+    type: File
+    secondaryFiles:
+      - .idx
+    inputBinding:
+      position: 10
+      prefix: "-resource:1000G,known=false,training=true,truth=false,prior=10.0"
+    doc: 1000 genome reference data
 
   resource_dbsnp:
     type: File
@@ -102,7 +102,7 @@ inputs:
       - .idx
     inputBinding:
       position: 11
-      prefix: "-resource:dbsnp,known=true,training=false,truth=false,prior=8.0"
+      prefix: "-resource:dbsnp,known=true,training=false,truth=false,prior=2.0"
     doc: dbSNP  reference data
 
 
