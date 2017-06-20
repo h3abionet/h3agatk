@@ -17,13 +17,12 @@ doc: |
             -recalFile    $tmpDir/out.recal \
             -tranchesFile $tmpDir/out.tranches \
             -rscriptFile  $tmpDir/out.R \
-            -nt 4 \
-            -an MQRankSum -an ReadPosRankSum -an DP -an FS -an QD \
-            -mode SNP \
-            -resource:hapmap,known=false,training=true,truth=true,prior=15.0 [hapmap_vcf] \
-            -resource:dbsnp,known=true,training=false,truth=false,prior=2.0  [dbsnp_vcf] \
-            -resource:omni,known=false,training=true,truth=true,prior=12.0   [1komni_vcf] \
-            -resource:1000G,known=false,training=true,truth=false,prior=10.0 [1ksnp_vcf]
+	    -nt 4 \
+	    --maxGaussians 4 \
+	    -an QD -an DP -an FS -an SOR -an ReadPosRankSum -an MQRankSum -an InbreedingCoeff \
+	    -mode INDEL \
+	    -resource:mills,known=false,training=true,truth=true,prior=12.0 [mills_vcf] \
+	    -resource:dbsnp,known=true,training=false,truth=false,prior=2.0 [dbsnp_vcf] 
       ```
 
 
@@ -57,32 +56,14 @@ inputs:
       prefix: -R
     doc: reference genome
 
-  resource_hapmap:
-    type: File
-    secondaryFiles:
-      - .idx
-    inputBinding:
-      position: 8
-      prefix: "-resource:hapmap,known=false,training=true,truth=true,prior=15.0"
-    doc: hapmap reference data
-
-  resource_omni:
-    type: File
-    secondaryFiles:
-      - .idx
-    inputBinding:
-      position: 9
-      prefix: "-resource:omni,known=false,training=true,truth=false,prior=12.0"
-    doc: omni reference data
-
   resource_mills:
     type: File
     secondaryFiles:
       - .idx
     inputBinding:
-      position: 9
+      position: 8 
       prefix: "-resource:mills,known=false,training=true,truth=true,prior=12.0"
-    doc: hapmap reference data
+    doc: Mills reference data
 
   resource_dbsnp:
     type: File
@@ -90,7 +71,7 @@ inputs:
       - .idx
     inputBinding:
       position: 9
-      prefix: "-resource:dbsnp,known=true,training=false,truth=false,prior=8.0"
+      prefix: "-resource:dbsnp,known=true,training=false,truth=false,prior=2.0"
     doc: dbSNP reference data
 
   max_gaussian:
@@ -153,24 +134,29 @@ arguments:
   position: 12
   prefix: -an
 
-#- valueFrom: "MQ"
-#  position: 12
-#  prefix: -an
-
-- valueFrom: "MQRankSum"
-  position: 12
-  prefix: -an
-
-- valueFrom: "ReadPosRankSum"
-  position: 12
+- valueFrom: "DP"
+  position: 13
   prefix: -an
 
 - valueFrom: "FS"
-  position: 12
+  position: 14
   prefix: -an
-#- valueFrom: "SOR"
-#  position: 12
-#  prefix: -an
+
+- valueFrom: "SOR"
+  position: 15
+  prefix: -an
+
+- valueFrom: "ReadPosRankSum"
+  position: 16
+  prefix: -an
+
+- valueFrom: "MQRankSum"
+  position: 17
+  prefix: -an
+
+- valueFrom: "InbreedingCoeff"
+  position: 18
+  prefix: -an
 
 - valueFrom: vqsr_tranches.indels.recal
   position: 13

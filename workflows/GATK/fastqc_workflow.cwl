@@ -7,14 +7,14 @@ inputs:
 outputs:
   zippedFile:
     type: File
-    outputSource: fastq/zippedFile
+    outputSource: fastqc/zippedFile
   report:
     type: Directory
-    outputSource: fastq/report
+    outputSource: fastqc/report
 
 steps:
   fastq:
-    run: fastqc.cwl
+    run: ../../tools/fastqc.cwl
     in:
       fastqFile: reads1
     out: [zippedFile,report]
