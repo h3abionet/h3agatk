@@ -17,11 +17,7 @@
       }
    ],
    "known_variant_db" : [
-      {
-         "class" : "File",
-         "path" : "https://s3-us-west-2.amazonaws.com/bd2k-test-data/h3abionet_gatk_workflow_data/dbsnp_138.hg19.excluding_sites_after_129.vcf"
-      },
-      {
+     {
          "class" : "File",
          "path" : "https://s3-us-west-2.amazonaws.com/bd2k-test-data/h3abionet_gatk_workflow_data/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
       },
@@ -42,9 +38,15 @@
       "path" : "https://s3-us-west-2.amazonaws.com/bd2k-test-data/h3abionet_gatk_workflow_data/hapmap_3.3.hg19.sites.vcf"
    },
    "resource_mills" : {
+      "path" : "https://s3-us-west-2.amazonaws.com/bd2k-test-data/h3abionet_gatk_workflow_data/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf",
+      "class" : "File"
+   },
+   "resource_1kg" : {
       "path" : "https://s3-us-west-2.amazonaws.com/bd2k-test-data/h3abionet_gatk_workflow_data/1000G_phase1.snps.high_confidence.hg19.sites.vcf",
       "class" : "File"
    },
+
+
    "covariate" : [
       "CycleCovariate",
       "ContextCovariate"
