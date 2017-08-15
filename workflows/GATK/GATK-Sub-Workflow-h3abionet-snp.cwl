@@ -69,7 +69,7 @@ steps:
       reference: reference
       resource_dbsnp: resource_dbsnp
       resource_omni: resource_omni
-      resource_1kg:resource_1kg
+      resource_1kg: resource_1kg
       resource_hapmap: resource_hapmap
     out: [tranches_File, recal_File]
 
