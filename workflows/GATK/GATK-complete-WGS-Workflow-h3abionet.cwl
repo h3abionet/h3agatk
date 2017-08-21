@@ -258,6 +258,7 @@ steps:
       resource_hapmap: resource_hapmap
       resource_omni: resource_omni
       resource_dbsnp: resource_dbsnp
+      resource_1kg: resource_1kg
     out: [ recal_File, annotated_snps ]
 
   IndelVQSR:

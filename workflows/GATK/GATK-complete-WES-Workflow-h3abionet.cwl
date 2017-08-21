@@ -215,6 +215,9 @@ inputs:
   resource_omni:
     type: File
 
+  resource_1kg:
+    type: File
+
   resource_dbsnp:
     type: File
 
@@ -297,6 +300,7 @@ steps:
       haplotest_vcf: HaplotypeCaller/output_HaplotypeCaller
       resource_hapmap: resource_hapmap
       resource_omni: resource_omni
+      resource_1kg: resource_1kg
       resource_dbsnp: resource_dbsnp
       snpeff_java_mem_opts: snpeff_java_mem_opts
     out: [ recal_File, annotated_snps ]

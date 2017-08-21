@@ -1,0 +1,7 @@
+# Ignore the dataset files downloaded with prepare_test.sh
+
+test/*.vcf
+test/*.idx
+
+# Ignore Intellij hidden directory 
+.idea/
