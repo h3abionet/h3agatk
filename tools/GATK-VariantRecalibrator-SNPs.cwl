@@ -32,6 +32,12 @@ hints:
 - $import: GATK-docker.yml
 
 inputs:
+  gatk_jar:
+    type: File
+    inputBinding:
+      position: 3
+      prefix: -jar
+
   haplotypecaller_snps_vcf:
     type: File
     inputBinding:
@@ -150,10 +156,9 @@ arguments:
 #  position: 2
 #  separate: false
 #  prefix: -Djava.io.tmpdir=
-- valueFrom: /usr/local/bin/GenomeAnalysisTK.jar
-  position: 3
-  prefix: -jar
-
+#- valueFrom: /usr/local/bin/GenomeAnalysisTK.jar
+#  position: 3
+#  prefix: -jar
 - valueFrom: VariantRecalibrator
   position: 4
   prefix: -T

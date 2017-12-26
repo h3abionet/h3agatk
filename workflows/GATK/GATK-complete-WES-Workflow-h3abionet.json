@@ -63,6 +63,10 @@
       "class" : "File"
    },
    "outputFileName_RealignTargetCreator" : "RealignTargetCreator-2017-04-23.intervals",
+   "gatk_jar" : {
+      "path" : "../../test/GenomeAnalysisTK.jar",
+      "class" : "File"
+   },
    "reference" : {
       "path" : "../../test/genome.fa",
       "class" : "File"

@@ -105,20 +105,20 @@ dockerFile: |
 
   ### INSTALL GATK
 
-  ENV VERSION "3.5"
-  ENV NAME "gatk-protected"
-  ENV URL https://github.com/broadgsa/gatk-protected/archive/${VERSION}.tar.gz
-
-  ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64/
-  ENV PATH /usr/lib/jvm/java-7-openjdk-amd64/bin:/usr/local/bin:$PATH
-
-  RUN wget -q -O - $URL | tar -zxv --strip-components=1 && \
-      grep -v "oracle.jrockit.jfr.StringConstantPool" /tmp/public/gatk-tools-public/src/main/java/org/broadinstitute/gatk/tools/walkers/varianteval/VariantEval.java >/tmp/public/gatk-tools-public/src/main/java/org/broadinstitute/gatk/tools/walkers/varianteval/VariantEval.1.java && \
-      mv -f /tmp/public/gatk-tools-public/src/main/java/org/broadinstitute/gatk/tools/walkers/varianteval/VariantEval.1.java /tmp/public/gatk-tools-public/src/main/java/org/broadinstitute/gatk/tools/walkers/varianteval/VariantEval.java && \
-      mvn verify -Ddisable.shadepackage '-P!queue' && \
-      cd ./target/executable/ && \
-      cp -r ./ /usr/local/bin/ && \
-      cd /tmp && \
-      rm -rf ./* && \
-      bash -c 'echo -e "#!/bin/bash\njava -jar /usr/local/bin/GenomeAnalysisTK.jar  \$@" > /usr/local/bin/GenomeAnalysisTK' && \
-      chmod +x /usr/local/bin/GenomeAnalysisTK
+#  ENV VERSION "3.5"
+#  ENV NAME "gatk-protected"
+#  ENV URL https://github.com/broadgsa/gatk-protected/archive/${VERSION}.tar.gz
+#
+#  ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64/
+#  ENV PATH /usr/lib/jvm/java-7-openjdk-amd64/bin:/usr/local/bin:$PATH
+#
+#  RUN wget -q -O - $URL | tar -zxv --strip-components=1 && \
+#      grep -v "oracle.jrockit.jfr.StringConstantPool" /tmp/public/gatk-tools-public/src/main/java/org/broadinstitute/gatk/tools/walkers/varianteval/VariantEval.java >/tmp/public/gatk-tools-public/src/main/java/org/broadinstitute/gatk/tools/walkers/varianteval/VariantEval.1.java && \
+#      mv -f /tmp/public/gatk-tools-public/src/main/java/org/broadinstitute/gatk/tools/walkers/varianteval/VariantEval.1.java /tmp/public/gatk-tools-public/src/main/java/org/broadinstitute/gatk/tools/walkers/varianteval/VariantEval.java && \
+#      mvn verify -Ddisable.shadepackage '-P!queue' && \
+#      cd ./target/executable/ && \
+#      cp -r ./ /usr/local/bin/ && \
+#      cd /tmp && \
+#      rm -rf ./* && \
+#      bash -c 'echo -e "#!/bin/bash\njava -jar /usr/local/bin/GenomeAnalysisTK.jar  \$@" > /usr/local/bin/GenomeAnalysisTK' && \
+#      chmod +x /usr/local/bin/GenomeAnalysisTK
