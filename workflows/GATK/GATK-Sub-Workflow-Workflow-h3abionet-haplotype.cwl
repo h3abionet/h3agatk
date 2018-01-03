@@ -284,6 +284,7 @@ steps:
   IndelRealigner:
     run: ../../tools/GATK-IndelRealigner.cwl  # FIXME: this is draft 3
     in:
+      gatk_jar: gatk_jar
       outputfile_indelRealigner: outputFileName_IndelRealigner
       inputBam_realign: MarkDuplicates/markDups_output
       intervals: RealignTarget/output_realignTarget
