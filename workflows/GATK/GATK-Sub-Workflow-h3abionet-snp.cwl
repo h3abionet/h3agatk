@@ -8,6 +8,10 @@ requirements:
   - class: InlineJavascriptRequirement
 
 inputs:
+  gatk_jar:
+    type: File
+    doc: Jar executable of the GATK tool
+
   reference:
     type: File
     doc: reference human genome file
@@ -65,6 +69,7 @@ steps:
   vqsr_snps:
     run: ../../tools/GATK-VariantRecalibrator-SNPs.cwl
     in:
+      gatk_jar: gatk_jar
       haplotypecaller_snps_vcf: haplotest_vcf
       reference: reference
       resource_dbsnp: resource_dbsnp
@@ -76,6 +81,7 @@ steps:
   apply_recalibration_snps:
     run: ../../tools/GATK-ApplyRecalibration.cwl
     in:
+      gatk_jar: gatk_jar
       #raw_vcf: HaplotypeCaller/output_HaplotypeCaller
       raw_vcf: haplotest_vcf
       reference: reference

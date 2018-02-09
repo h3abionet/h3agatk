@@ -8,6 +8,10 @@ requirements:
   - class: InlineJavascriptRequirement
 
 inputs:
+  gatk_jar:
+    type: File
+    doc: Jar executable of the GATK tool
+
   reference:
     type: File
     doc: reference human genome file
@@ -269,6 +273,7 @@ steps:
   RealignTarget:
     run: ../../tools/GATK-RealignTargetCreator.cwl
     in:
+      gatk_jar: gatk_jar
       outputfile_realignTarget: outputFileName_RealignTargetCreator
       inputBam_realign: MarkDuplicates/markDups_output
       reference: uncompressed_reference
@@ -279,6 +284,7 @@ steps:
   IndelRealigner:
     run: ../../tools/GATK-IndelRealigner.cwl  # FIXME: this is draft 3
     in:
+      gatk_jar: gatk_jar
       outputfile_indelRealigner: outputFileName_IndelRealigner
       inputBam_realign: MarkDuplicates/markDups_output
       intervals: RealignTarget/output_realignTarget
@@ -289,6 +295,7 @@ steps:
   BaseRecalibrator:
     run: ../../tools/GATK-BaseRecalibrator.cwl
     in:
+      gatk_jar: gatk_jar
       outputfile_BaseRecalibrator: outputFileName_BaseRecalibrator
       inputBam_BaseRecalibrator: IndelRealigner/output_indelRealigner
       reference: reference
@@ -300,6 +307,7 @@ steps:
   PrintReads:
     run: ../../tools/GATK-PrintReads.cwl  # FIXME: this is draft 3
     in:
+      gatk_jar: gatk_jar
       outputfile_printReads: outputFileName_PrintReads
       inputBam_printReads: IndelRealigner/output_indelRealigner
       reference: reference
@@ -310,6 +318,7 @@ steps:
   HaplotypeCaller:
     run: ../../tools/GATK-HaplotypeCaller.cwl  # FIXME: this is draft 3
     in:
+      gatk_jar: gatk_jar
       outputfile_HaplotypeCaller: outputFileName_HaplotypeCaller
       inputBam_HaplotypeCaller: PrintReads/output_printReads
       reference: reference

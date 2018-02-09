@@ -10,6 +10,10 @@ requirements:
   - class: InlineJavascriptRequirement
 
 inputs:
+  gatk_jar:
+    type: File
+    doc: Jar executable of the GATK tool
+
   reference:
     type: File
     doc: reference human genome file
@@ -72,6 +76,7 @@ steps:
   select_indels:
     run: ../../tools/GATK-SelectVariants.cwl
     in:
+      gatk_jar: gatk_jar
       raw_vcf: haplotest_vcf
       reference: reference
       select_type: indel_mode
@@ -81,6 +86,7 @@ steps:
   filter_indels:
     run: ../../tools/GATK-VariantFiltration.cwl
     in:
+      gatk_jar: gatk_jar
       indels_vcf: select_indels/output_File
       reference: reference
       filter_expression: filter_expression

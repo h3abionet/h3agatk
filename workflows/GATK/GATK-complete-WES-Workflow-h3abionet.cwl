@@ -69,6 +69,11 @@ doc: |
   [BAMStats](http://bamstats.sourceforge.net), is a simple software tool built on the Picard Java API (2), which can calculate and graphically display various metrics derived from SAM/BAM files of value in QC assessments.
 
 inputs:
+
+  gatk_jar:
+    type: File
+    doc: Jar executable of the GATK tool
+
   reference:
     type: File
     doc: reference human genome file
@@ -256,6 +261,7 @@ steps:
   HaplotypeCaller:
     run: GATK-Sub-Workflow-Workflow-h3abionet-haplotype.cwl
     in:
+      gatk_jar: gatk_jar
       reference: reference
       uncompressed_reference: uncompressed_reference
       reads: reads
@@ -292,6 +298,7 @@ steps:
   SnpVQSR:
     run: GATK-Sub-Workflow-h3abionet-snp.cwl
     in:
+      gatk_jar: gatk_jar
       reference: reference
       snpf_genome: snpf_genome
       snpf_nodownload: snpf_nodownload
@@ -308,6 +315,7 @@ steps:
   IndelFilter:
     run: GATK-Sub-Workflow-h3abionet-indel-no-vqsr.cwl
     in:
+      gatk_jar: gatk_jar
       reference: reference
       snpf_genome: snpf_genome
       snpf_nodownload: snpf_nodownload

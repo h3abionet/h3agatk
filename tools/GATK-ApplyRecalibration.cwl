@@ -9,6 +9,12 @@ hints:
 - $import: GATK-docker.yml
 
 inputs:
+  gatk_jar:
+    type: File
+    inputBinding:
+      position: 3
+      prefix: -jar
+
   multithreading_nt:
     type: int
     default: 4
@@ -91,9 +97,9 @@ arguments:
    position: 2
    separate: false
    prefix: -Djava.io.tmpdir=
- - valueFrom: /usr/local/bin/GenomeAnalysisTK.jar
-   position: 3
-   prefix: -jar
+#- valueFrom: /usr/local/bin/GenomeAnalysisTK.jar
+#  position: 3
+#  prefix: -jar
  - valueFrom: ApplyRecalibration
    position: 4
    prefix: -T

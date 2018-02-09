@@ -74,6 +74,12 @@ requirements:
 
 
 inputs:
+  gatk_jar:
+    type: File
+    inputBinding:
+      position: 3
+      prefix: -jar
+
   max_alternate_alleles:
     type: int?
     inputBinding:
@@ -455,9 +461,9 @@ arguments:
   position: 2
   separate: false
   prefix: -Djava.io.tmpdir=
-- valueFrom: /usr/local/bin/GenomeAnalysisTK.jar
-  position: 3
-  prefix: -jar
+#- valueFrom: /usr/local/bin/GenomeAnalysisTK.jar
+#  position: 3
+#  prefix: -jar
 - valueFrom: HaplotypeCaller
   position: 4
   prefix: -T

@@ -24,6 +24,12 @@ hints:
 - $import: GATK-docker.yml
 
 inputs:
+  gatk_jar:
+    type: File
+    inputBinding:
+      position: 3
+      prefix: -jar
+
   reference:
     type: File
     secondaryFiles:
@@ -75,10 +81,9 @@ outputs:
       doc: the selected variants as a vcf file
 
 arguments:
-- valueFrom: /usr/local/bin/GenomeAnalysisTK.jar
-  position: 3
-  prefix: -jar
-
+#- valueFrom: /usr/local/bin/GenomeAnalysisTK.jar
+#  position: 3
+#  prefix: -jar
 - valueFrom: SelectVariants
   position: 4
   prefix: -T
