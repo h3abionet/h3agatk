@@ -83,6 +83,17 @@ cwltool --debug --tmpdir-prefix /data/working --outdir /data/output --tmp-outdir
 
 Alternatively you can use the Dockstore command line to execute the workflow.
 
+## Launch a cloud VM: e.g. AWS EC2
+The user can run the workflow on any Unix-like platform, given that all the depenedencies are satisfied. For example the user can launch an EC2 instance. There are several ways to do so:
+
+1- Through AWS web console:[AWS own documentation](https://aws.amazon.com/getting-started/tutorials/launch-windows-vm/), or Connor Leech's excellent step by step [guide](https://medium.com/@connorleech/how-to-launch-an-ec2-instance-de568295205d).
+
+2- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-ec2-launch.html).
+
+3- [StarCluster](http://star.mit.edu/cluster/)
+
+You can follow the instructions above to get the pipeline up and running.
+
 # Output
 
 Here's the sample output, your output paths will differ depending on your system.
