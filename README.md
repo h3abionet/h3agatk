@@ -238,3 +238,10 @@ See our [Trello board](https://trello.com/b/pcWKqbXv/stream-b-ngs-variant-callin
 - [ ] DepthOfCoverage need to have the input from view and sort steps in the same directory (e.g. the bam and bai need to be mounted in the same directory). CWL puts each input on it's own path and these are read only.  Michael is going to help us work around this.  In the mean time, DepthOfCoverage is commented out
 - [ ] Properly make and pass around the .idx files since many of the tools
 - [ ] multiple fastq sets as input needs to be supported
+
+
+### References
+
+To cite this pipeline, please use:
+
+Baichoo, S., Souilmi, Y., Panji, S., Botha, G., Meintjes, A., Hazelhurst, S., Bendou, H., Beste, E. de, et al. 2018. Developing reproducible bioinformatics analysis workflows for heterogeneous computing environments to support African genomics. BMC Bioinformatics. 19(1):457. DOI: [10.1186/s12859-018-2446-1](https://doi.org/10.1186/s12859-018-2446-1).
