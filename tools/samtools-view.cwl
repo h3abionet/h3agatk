@@ -182,7 +182,7 @@ baseCommand: [samtools, view]
 #  s: http://schema.org/
 #
 #$schemas:
-#- http://schema.org/docs/schema_org_rdfa.html
+#- http://schema.org/version/9.0/schemaorg-current-http.rdf
 #
 #s:mainEntity:
 #  $import: samtools-metadata.yaml
