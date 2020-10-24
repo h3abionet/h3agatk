@@ -1,50 +1,43 @@
 #!/usr/bin/env cwl-runner
-
-cwlVersion: "cwl:draft-3"
-
+cwlVersion: "v1.0"
 class: CommandLineTool
-
-description: |
+doc: |
   samtools-rmdup.cwl is developed for CWL consortium
-
 requirements:
 - $import: envvar-global.yml
 - $import: samtools-docker.yml
 - class: InlineJavascriptRequirement
 
 inputs:
-- id: "input"
-  type: File
-  description: |
-    Input bam file.
-  inputBinding:
-    position: 2
+  input:
+    doc: |
+      Input bam file.
+    type: File
+    inputBinding:
+      position: 2
 
-- id: "output_name"
-  type: string
-  inputBinding:
-    position: 3
+  output_name:
+    type: string
+    inputBinding:
+      position: 3
 
-- id: "single_end"
-  type: boolean
-  default: false
-  description: |
-    rmdup for SE reads
-
-- id: "pairend_as_se"
-  type: boolean
-  default: false
-  description: |
-    treat PE reads as SE in rmdup (force -s)
-
-outputs:
-- id: "rmdup"
-  type: File
-  description: "File with removed duplicates"
-  outputBinding:
-    glob: $(inputs.output_name)
-
+  single_end:
+    doc: |
+      rmdup for SE reads
+    type: boolean
+    default: false
+  pairend_as_se:
+    doc: |
+      treat PE reads as SE in rmdup (force -s)
+    type: boolean
+    default: false
 baseCommand: ["samtools", "rmdup"]
+outputs:
+  rmdup:
+    doc: "File with removed duplicates"
+    type: File
+    outputBinding:
+      glob: $(inputs.output_name)
 
 $namespaces:
   s: http://schema.org/
@@ -58,7 +51,6 @@ s:mainEntity:
 s:downloadUrl: https://github.com/common-workflow-language/workflows/blob/master/tools/samtools-rmdup.cwl
 s:codeRepository: https://github.com/common-workflow-language/workflows
 s:license: http://www.apache.org/licenses/LICENSE-2.0
-
 s:isPartOf:
   class: s:CreativeWork
   s:name: "Common Workflow Language"

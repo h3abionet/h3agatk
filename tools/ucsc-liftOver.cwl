@@ -1,10 +1,7 @@
 #!/usr/bin/env cwl-runner
-
-cwlVersion: "cwl:draft-3"
-
+cwlVersion: "v1.0"
 class: CommandLineTool
-
-description: |
+doc: |
   ucsc-liftOver.cwl is developed for CWL consortium
     usage:
        liftOver oldFile map.chain newFile unMapped
@@ -20,197 +17,195 @@ description: |
              been a rearrangement in one of the species, the size of the
              region being mapped may change dramatically after mapping.
     ***********************************************************************
-
 requirements:
-  - class: InlineJavascriptRequirement
-  - $import: envvar-global.yml
-  - $import: ucsc-userapps-docker.yml
+- class: InlineJavascriptRequirement
+- $import: envvar-global.yml
+- $import: ucsc-userapps-docker.yml
 
 inputs:
-  - id: "#oldFile"
+  oldFile:
     type: File
     inputBinding:
       position: 2
 
-  - id: "#mapChain"
-    type: File
-    description: |
+  mapChain:
+    doc: |
       The map.chain file has the old genome as the target and the new genome
       as the query.
+    type: File
     inputBinding:
       position: 3
 
-  - id: "#newFile"
+  newFile:
     type: string
     inputBinding:
       position: 4
 
-  - id: "#unMapped"
+  unMapped:
     type: string
     inputBinding:
       position: 5
 
-  - id: "#gff"
-    type: ["null",boolean]
-    description: |
+  gff:
+    doc: |
       File is in gff/gtf format.  Note that the gff lines are converted
        separately.  It would be good to have a separate check after this
        that the lines that make up a gene model still make a plausible gene
        after liftOver
+    type: boolean?
     inputBinding:
       position: 1
       prefix: "-gff"
 
-  - id: "#genePred"
-    type: ["null",boolean]
-    description: |
+  genePred:
+    doc: |
       File is in genePred format
+    type: boolean?
     inputBinding:
       position: 1
       prefix: "-genePred"
 
-  - id: "#sample"
-    type: ["null",boolean]
-    description: |
+  sample:
+    doc: |
       File is in sample format
+    type: boolean?
     inputBinding:
       position: 1
       prefix: "-sample"
 
-  - id: "#bedPlus"
-    type: ["null",int]
-    description: |
+  bedPlus:
+    doc: |
       =N - File is bed N+ format
+    type: int?
     inputBinding:
       separate: false
       position: 1
       prefix: "-bedPlus="
 
-  - id: "#positions"
-    type: ["null",boolean]
-    description: |
+  positions:
+    doc: |
       File is in browser "position" format
+    type: boolean?
     inputBinding:
       position: 1
       prefix: "-positions"
 
-  - id: "#hasBin"
-    type: ["null",boolean]
-    description: |
+  hasBin:
+    doc: |
       File has bin value (used only with -bedPlus)
+    type: boolean?
     inputBinding:
       position: 1
       prefix: "-hasBin"
 
-  - id: "#minMatch"
-    type: ["null",int]
-    description: |
+  minMatch:
+    doc: |
       -minMatch=0.N Minimum ratio of bases that must remap. Default 0.95
+    type: int?
     inputBinding:
       separate: false
       position: 1
       prefix: "-minMatch="
 
-  - id: "#tab"
-    type: ["null",boolean]
+  tab:
+    type: boolean?
     inputBinding:
       position: 1
       prefix: "-tab"
 
-  - id: "#pslT"
-    type: ["null",boolean]
-    description: |
+  pslT:
+    doc: |
       File is in psl format, map target side only
+    type: boolean?
     inputBinding:
       position: 1
       prefix: "-pslT"
 
-  - id: "#ends"
-    type: ["null",int]
-    description: |
+  ends:
+    doc: |
       =N - Lift the first and last N bases of each record and combine the
                result. This is useful for lifting large regions like BAC end pairs.
+    type: int?
     inputBinding:
       separate: false
       position: 1
       prefix: "-ends="
 
-  - id: "#minBlocks"
-    type: ["null",int]
-    description: |
+  minBlocks:
+    doc: |
       .N Minimum ratio of alignment blocks or exons that must map
                     (default 1.00)
+    type: int?
     inputBinding:
       separate: false
       position: 1
       prefix: "-minBlocks="
 
-  - id: "#fudgeThick"
-    type: ["null",boolean]
-    description: |
+  fudgeThick:
+    doc: |
       (bed 12 or 12+ only) If thickStart/thickEnd is not mapped,
                     use the closest mapped base.  Recommended if using
                     -minBlocks.
+    type: boolean?
     inputBinding:
       position: 1
       prefix: "-fudgeThick"
 
-  - id: "#multiple"
-    type: ["null",boolean]
-    description: |
+  multiple:
+    doc: |
       Allow multiple output regions
+    type: boolean?
     inputBinding:
       position: 1
       prefix: "-multiple"
 
-  - id: "#minChainT"
-    type: ["null",int]
-    description: |
+  minChainT:
+    doc: |
       Minimum chain size in target/query, when mapping
                              to multiple output regions (default 0, 0)
+    type: int?
     inputBinding:
       position: 1
       prefix: "-minChainT"
 
-  - id: "#minChainQ"
-    type: ["null",int]
-    description: |
+  minChainQ:
+    doc: |
       Minimum chain size in target/query, when mapping
                              to multiple output regions (default 0, 0)
+    type: int?
     inputBinding:
       position: 1
       prefix: "-minChainQ"
 
-  - id: "#minSizeQ"
-    type: ["null",int]
-    description: |
+  minSizeQ:
+    doc: |
       Min matching region size in query with -multiple.
+    type: int?
     inputBinding:
       position: 1
       prefix: "-minSizeQ"
 
-  - id: "#chainTable"
-    type: ["null",string]
-    description: |
+  chainTable:
+    doc: |
       Min matching region size in query with -multiple.
+    type: string?
     inputBinding:
       position: 1
       prefix: "-chainTable"
 
+baseCommand: "liftOver"
 outputs:
-  - id: "#output"
+  output:
+    doc: "The sorted file"
     type: File
-    description: "The sorted file"
     outputBinding:
       glob: $(inputs.newFile)
 
-  - id: "#unMappedFile"
+  unMappedFile:
+    doc: "The sorted file"
     type: File
-    description: "The sorted file"
     outputBinding:
       glob: $(inputs.unMapped)
-
-baseCommand: ["liftOver"]
 
 $namespaces:
   s: http://schema.org/
@@ -224,7 +219,6 @@ s:mainEntity:
 s:downloadUrl: https://github.com/common-workflow-language/workflows/blob/master/tools/ucsc-liftOver.cwl
 s:codeRepository: https://github.com/common-workflow-language/workflows
 s:license: http://www.apache.org/licenses/LICENSE-2.0
-
 s:isPartOf:
   class: s:CreativeWork
   s:name: "Common Workflow Language"
