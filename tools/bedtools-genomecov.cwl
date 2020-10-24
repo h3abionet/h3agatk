@@ -1,53 +1,16 @@
 #!/usr/bin/env cwl-runner
 
 $namespaces:
-  dct: http://purl.org/dc/terms/
   foaf: http://xmlns.com/foaf/0.1/
   doap: http://usefulinc.com/ns/doap#
-  adms: http://www.w3.org/ns/adms#
-  dcat: http://www.w3.org/ns/dcat#
 
 $schemas:
-- http://dublincore.org/2012/06/14/dcterms.rdf
 - http://xmlns.com/foaf/spec/20140114.rdf
 - http://usefulinc.com/ns/doap#
-- http://www.w3.org/ns/adms#
-- http://www.w3.org/ns/dcat.rdf
 
 cwlVersion: "cwl:draft-3"
 
 class: CommandLineTool
-
-adms:includedAsset:
-  doap:name: "bedtools"
-  doap:description: |
-    A software suite for the comparison, manipulation and annotation of genomic features in browser extensible data (BED) and general feature format (GFF) format.
-    BEDTools also supports the comparison of sequence alignments in BAM format to both BED and GFF features.
-    The tools are extremely efficient and allow the user to compare large datasets (e.g. next-generation sequencing data) with both public and custom genome annotation tracks.
-    BEDTools can be combined with one another as well as with standard UNIX commands, thus facilitating routine genomics tasks as well as pipelines that can quickly answer intricate questions of large genomic datasets.
-  doap:homepage: "http://bedtools.readthedocs.org"
-  doap:repository:
-  - class: doap:GitRepository
-    doap:location: "https://github.com/arq5x/bedtools2"
-  doap:release:
-  - class: doap:Version
-    doap:revision: "2.25.0"
-  doap:license: "GPLv2"
-  doap:category: "commandline tool"
-  doap:programming-language: "C++"
-  foaf:publications:
-  - id: urn:pmid:20110278
-    foaf:title: "Aaron R. Quinlan, Ira M. Hall (2010) BEDTools: a flexible suite of utilities for comparing genomic features. Bioinformatics, 26(6) 841-842, http://dx.doi.org/10.1093/bioinformatics/btq033"
-    foaf:homepage: "http://bioinformatics.oxfordjournals.org/content/26/6/841"
-  doap:maintainer:
-  - class: foaf:Person
-    foaf:name: "Aaron R. Quinlan"
-    foaf:mbox: "aaronquinlan at gmail.com"
-    dct:isPartOf:
-    - class: foaf:Organization
-      foaf:name: "Department of Biochemistry and Molecular Genetics, University of Virginia School of Medicine"
-    - class: foaf:Organization
-      foaf:name: "Center for Public Health Genomics, University of Virginia, Charlottesville, VA 22908, USA"
 
 description: |
   bedtools-genomecov.cwl is developed for CWL consortium
@@ -57,9 +20,6 @@ description: |
       Sources: https://github.com/arq5x/bedtools2
       Summary: Compute the coverage of a feature file among a genome.
       Usage: bedtools genomecov [OPTIONS] -i <bed/gff/vcf> -g <genome>
-
-doap:name: "bedtools-genomecov.cwl"
-dcat:downloadURL: "https://github.com/common-workflow-language/workflows/blob/master/tools/bedtools-genomecov.cwl"
 
 doap:maintainer:
 - class: foaf:Organization
