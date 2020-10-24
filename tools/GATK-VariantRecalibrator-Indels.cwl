@@ -17,12 +17,12 @@ doc: |
             -recalFile    $tmpDir/out.recal \
             -tranchesFile $tmpDir/out.tranches \
             -rscriptFile  $tmpDir/out.R \
-	    -nt 4 \
-	    --maxGaussians 4 \
-	    -an QD -an DP -an FS -an SOR -an ReadPosRankSum -an MQRankSum -an InbreedingCoeff \
-	    -mode INDEL \
-	    -resource:mills,known=false,training=true,truth=true,prior=12.0 [mills_vcf] \
-	    -resource:dbsnp,known=true,training=false,truth=false,prior=2.0 [dbsnp_vcf] 
+            -nt 4 \
+            --maxGaussians 4 \
+            -an QD -an DP -an FS -an SOR -an ReadPosRankSum -an MQRankSum -an InbreedingCoeff \
+            -mode INDEL \
+            -resource:mills,known=false,training=true,truth=true,prior=12.0 [mills_vcf] \
+            -resource:dbsnp,known=true,training=false,truth=false,prior=2.0 [dbsnp_vcf] 
       ```
 
 
