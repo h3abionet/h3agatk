@@ -1,665 +1,7 @@
 #!/usr/bin/env cwl-runner
-
-cwlVersion: "cwl:draft-3"
-
+cwlVersion: "v1.0"
 class: CommandLineTool
-
-requirements:
-- $import: envvar-global.yml
-- class: InlineJavascriptRequirement
-- class: ShellCommandRequirement
-- class: DockerRequirement
-  #dockerImageId: scidap/bowtie:v1.1.2 #not yet ready
-  dockerPull: scidap/bowtie:v1.1.2
-  dockerFile: |
-    #################################################################
-    # Dockerfile
-    #
-    # Software:         bowtie
-    # Software Version: 1.1.2
-    # Description:      Bowtie image for SciDAP
-    # Website:          http://bowtie-bio.sourceforge.net, http://scidap.com/
-    # Provides:         bowtie
-    # Base Image:       scidap/scidap:v0.0.1
-    # Build Cmd:        docker build --rm -t scidap/bowtie:v1.1.2 .
-    # Pull Cmd:         docker pull scidap/bowtie:v1.1.2
-    # Run Cmd:          docker run --rm scidap/bowtie:v1.1.2 bowtie
-    #################################################################
-
-    ### Base Image
-    FROM scidap/scidap:v0.0.1
-    MAINTAINER Andrey V Kartashov "porter@porter.st"
-    ENV DEBIAN_FRONTEND noninteractive
-
-    ################## BEGIN INSTALLATION ######################
-
-    WORKDIR /tmp
-
-    ### Installing bowtie
-
-    ENV VERSION 1.1.2
-    ENV NAME bowtie
-    ENV URL "https://github.com/BenLangmead/bowtie/archive/v${VERSION}.tar.gz"
-
-    RUN wget -q -O - $URL | tar -zxv && \
-        cd ${NAME}-${VERSION} && \
-        make -j 4 && \
-        cd .. && \
-        cp ./${NAME}-${VERSION}/${NAME} /usr/local/bin/ && \
-        cp ./${NAME}-${VERSION}/${NAME}-* /usr/local/bin/ && \
-        strip /usr/local/bin/*; true && \
-        rm -rf ./${NAME}-${VERSION}/
-
-inputs:
-
-  - id: '#ebwt'
-    type: string
-    description: >
-      The basename of the index to be searched.
-      The basename is the name of any of the index files up to but not including the final .1.ebwt / .rev.1.ebwt / etc. bowtie looks for
-      the specified index first in the current directory,
-      then in the indexes subdirectory under the directory where the bowtie executable is located,
-      then looks in the directory specified in the BOWTIE_INDEXES environment variable.
-    inputBinding:
-      position: 8
-
-  - id: '#filelist'
-    type:
-      type: array
-      items: File
-    description: |
-      {-1 <m1> -2 <m2> | --12 <r> | <s>}
-      <m1>    Comma-separated list of files containing upstream mates (or the
-            sequences themselves, if -c is set) paired with mates in <m2>
-      <m2>    Comma-separated list of files containing downstream mates (or the
-            sequences themselves if -c is set) paired with mates in <m1>
-      <r>     Comma-separated list of files containing Crossbow-style reads.  Can be
-            a mixture of paired and unpaired.  Specify "-"for stdin.
-      <s>     Comma-separated list of files containing unpaired reads, or the
-            sequences themselves, if -c is set.  Specify "-"for stdin.
-    inputBinding:
-      itemSeparator: ","
-      position: 9
-
-  - id: '#filelist_mates'
-    type:
-      - "null"
-      - type: array
-        items: File
-    inputBinding:
-      itemSeparator: ","
-      position: 10
-
-  - id: '#filename'
-    type: string
-    inputBinding:
-      position: 11
-
-  - id: '#q'
-    type:
-      - 'null'
-      - boolean
-    description: "query input files are FASTQ .fq/.fastq (default)\n"
-    inputBinding:
-      position: 1
-      prefix: '-q'
-
-  - id: '#f'
-    type:
-      - 'null'
-      - boolean
-    description: "query input files are (multi-)FASTA .fa/.mfa\n"
-    inputBinding:
-      position: 1
-      prefix: '-f'
-
-  - id: '#r'
-    type:
-      - 'null'
-      - boolean
-    description: "query input files are raw one-sequence-per-line\n"
-    inputBinding:
-      position: 1
-      prefix: '-r'
-
-  - id: '#c'
-    type:
-      - 'null'
-      - boolean
-    description: "query sequences given on cmd line (as <mates>, <singles>)\n"
-    inputBinding:
-      position: 1
-      prefix: '-c'
-
-  - id: '#C'
-    type:
-      - 'null'
-      - boolean
-    description: "reads and index are in colorspace\n"
-    inputBinding:
-      position: 1
-      prefix: '-C'
-  - id: '#Q'
-    type:
-      - 'null'
-      - File
-    description: >
-      --quals <file>  QV file(s) corresponding to CSFASTA inputs; use with -f -C
-    inputBinding:
-      position: 1
-      prefix: '-Q'
-  - id: '#Q1'
-    type:
-      - 'null'
-      - boolean
-    description: |
-      --Q2 <file>   same as -Q, but for mate files 1 and 2 respectively
-    inputBinding:
-      position: 1
-      prefix: '--Q1'
-  - id: '#s'
-    type:
-      - 'null'
-      - int
-    description: |
-      --skip <int>    skip the first <int> reads/pairs in the input
-    inputBinding:
-      position: 1
-      prefix: '-s'
-  - id: '#u'
-    type:
-      - 'null'
-      - int
-    description: |
-      --qupto <int>   stop after first <int> reads/pairs (excl. skipped reads)
-    inputBinding:
-      position: 1
-      prefix: '-u'
-  - id: '#5'
-    type:
-      - 'null'
-      - int
-    description: |
-      --trim5 <int>   trim <int> bases from 5' (left) end of reads
-    inputBinding:
-      position: 1
-      prefix: '-5'
-  - id: '#3'
-    type:
-      - 'null'
-      - int
-    description: |
-      --trim3 <int>   trim <int> bases from 3' (right) end of reads
-    inputBinding:
-      position: 1
-      prefix: '-3'
-  - id: '#phred33-quals'
-    type:
-      - 'null'
-      - boolean
-    description: "input quals are Phred+33 (default)\n"
-    inputBinding:
-      position: 1
-      prefix: '--phred33-quals'
-  - id: '#phred64-quals'
-    type:
-      - 'null'
-      - boolean
-    description: "input quals are Phred+64 (same as --solexa1.3-quals)\n"
-    inputBinding:
-      position: 1
-      prefix: '--phred64-quals'
-  - id: '#solexa-quals'
-    type:
-      - 'null'
-      - boolean
-    description: "input quals are from GA Pipeline ver. < 1.3\n"
-    inputBinding:
-      position: 1
-      prefix: '--solexa-quals'
-  - id: '#solexa1.3-quals'
-    type:
-      - 'null'
-      - boolean
-    description: "input quals are from GA Pipeline ver. >= 1.3\n"
-    inputBinding:
-      position: 1
-      prefix: '--solexa1.3-quals'
-  - id: '#integer-quals'
-    type:
-      - 'null'
-      - boolean
-    description: "qualities are given as space-separated integers (not ASCII)\n"
-    inputBinding:
-      position: 1
-      prefix: '--integer-quals'
-  - id: '#large-index'
-    type:
-      - 'null'
-      - boolean
-    description: "force usage of a 'large' index, even if a small one is present\nAlignment:\n"
-    inputBinding:
-      position: 1
-      prefix: '--large-index'
-  - id: '#v'
-    type:
-      - 'null'
-      - int
-    description: >
-      <int>           report end-to-end hits w/ <=v mismatches; ignore qualities
-
-      or
-    inputBinding:
-      position: 1
-      prefix: '-v'
-  - id: '#n'
-    type:
-      - 'null'
-      - int
-    description: |
-      --seedmms <int> max mismatches in seed (can be 0-3, default: -n 2)
-    inputBinding:
-      position: 1
-      prefix: '-n'
-  - id: '#e'
-    type:
-      - 'null'
-      - int
-    description: >
-      --maqerr <int>  max sum of mismatch quals across alignment for -n (def:
-      70)
-    inputBinding:
-      position: 1
-      prefix: '-e'
-  - id: '#l'
-    type:
-      - 'null'
-      - int
-    description: |
-      --seedlen <int> seed length for -n (default: 28)
-    inputBinding:
-      position: 1
-      prefix: '-l'
-  - id: '#nomaqround'
-    type:
-      - 'null'
-      - boolean
-    description: "disable Maq-like quality rounding for -n (nearest 10 <= 30)\n"
-    inputBinding:
-      position: 1
-      prefix: '--nomaqround'
-  - id: '#I'
-    type:
-      - 'null'
-      - int
-    description: |
-      --minins <int>  minimum insert size for paired-end alignment (default: 0)
-    inputBinding:
-      position: 1
-      prefix: '-I'
-  - id: '#X'
-    type:
-      - 'null'
-      - int
-    description: >
-      --maxins <int>  maximum insert size for paired-end alignment (default:
-      250)
-    inputBinding:
-      position: 1
-      prefix: '-X'
-  - id: '#fr'
-    type:
-      - 'null'
-      - boolean
-    description: |
-      --rf/--ff     -1, -2 mates align fw/rev, rev/fw, fw/fw (default: --fr)
-    inputBinding:
-      position: 1
-      prefix: '--fr'
-  - id: '#nofw'
-    type:
-      - 'null'
-      - boolean
-    description: |
-      --norc      do not align to forward/reverse-complement reference strand
-    inputBinding:
-      position: 1
-      prefix: '--nofw'
-  - id: '#maxbts'
-    type:
-      - 'null'
-      - int
-    description: |
-      <int>     max # backtracks for -n 2/3 (default: 125, 800 for --best)
-    inputBinding:
-      position: 1
-      prefix: '--maxbts'
-  - id: '#pairtries'
-    type:
-      - 'null'
-      - int
-    description: |
-      <int>  max # attempts to find mate for anchor hit (default: 100)
-    inputBinding:
-      position: 1
-      prefix: '--pairtries'
-  - id: '#y'
-    type:
-      - 'null'
-      - boolean
-    description: >
-      --tryhard       try hard to find valid alignments, at the expense of speed
-    inputBinding:
-      position: 1
-      prefix: '-y'
-  - id: '#chunkmbs'
-    type:
-      - 'null'
-      - int
-    description: |
-      <int>   max megabytes of RAM for best-first search frames (def: 64)
-      Reporting:
-    inputBinding:
-      position: 1
-      prefix: '--chunkmbs'
-  - id: '#k'
-    type:
-      - 'null'
-      - int
-    description: |
-      <int>           report up to <int> good alignments per read (default: 1)
-    inputBinding:
-      position: 1
-      prefix: '-k'
-  - id: '#a'
-    type:
-      - 'null'
-      - boolean
-    description: |
-      --all           report all alignments per read (much slower than low -k)
-    inputBinding:
-      position: 1
-      prefix: '-a'
-  - id: '#m'
-    type:
-      - 'null'
-      - int
-    description: |
-      <int>           suppress all alignments if > <int> exist (def: no limit)
-    inputBinding:
-      position: 1
-      prefix: '-m'
-  - id: '#M'
-    type:
-      - 'null'
-      - int
-    description: >
-      <int>           like -m, but reports 1 random hit (MAPQ=0); requires
-      --best
-    inputBinding:
-      position: 1
-      prefix: '-M'
-  - id: '#best'
-    type:
-      - 'null'
-      - boolean
-    description: "hits guaranteed best stratum; ties broken by quality\n"
-    inputBinding:
-      position: 1
-      prefix: '--best'
-  - id: '#strata'
-    type:
-      - 'null'
-      - boolean
-    description: "hits in sub-optimal strata aren't reported (requires --best)\nOutput:\n"
-    inputBinding:
-      position: 1
-      prefix: '--strata'
-  - id: '#t'
-    type:
-      - 'null'
-      - boolean
-    description: |
-      --time          print wall-clock time taken by search phases
-    inputBinding:
-      position: 1
-      prefix: '-t'
-  - id: '#B'
-    type:
-      - 'null'
-      - int
-    description: |
-      --offbase <int> leftmost ref offset = <int> in bowtie output (default: 0)
-    inputBinding:
-      position: 1
-      prefix: '-B'
-  - id: '#quiet'
-    type:
-      - 'null'
-      - boolean
-    description: "print nothing but the alignments\n"
-    inputBinding:
-      position: 1
-      prefix: '--quiet'
-  - id: '#refout'
-    type:
-      - 'null'
-      - boolean
-    description: "write alignments to files refXXXXX.map, 1 map per reference\n"
-    inputBinding:
-      position: 1
-      prefix: '--refout'
-  - id: '#refidx'
-    type:
-      - 'null'
-      - boolean
-    description: "refer to ref. seqs by 0-based index rather than name\n"
-    inputBinding:
-      position: 1
-      prefix: '--refidx'
-  - id: '#al'
-    type:
-      - 'null'
-      - boolean
-    description: |
-      <fname>       write aligned reads/pairs to file(s) <fname>
-    inputBinding:
-      position: 1
-      prefix: '--al'
-  - id: '#un'
-    type:
-      - 'null'
-      - boolean
-    description: |
-      <fname>       write unaligned reads/pairs to file(s) <fname>
-    inputBinding:
-      position: 1
-      prefix: '--un'
-  - id: '#max'
-    type:
-      - 'null'
-      - boolean
-    description: |
-      <fname>      write reads/pairs over -m limit to file(s) <fname>
-    inputBinding:
-      position: 1
-      prefix: '--max'
-  - id: '#suppress'
-    type:
-      - 'null'
-      - boolean
-    description: |
-      <cols>  suppresses given columns (comma-delim'ed) in default output
-    inputBinding:
-      position: 1
-      prefix: '--suppress'
-  - id: '#fullref'
-    type:
-      - 'null'
-      - boolean
-    description: "write entire ref name (default: only up to 1st space)\nColorspace:\n"
-    inputBinding:
-      position: 1
-      prefix: '--fullref'
-  - id: '#snpphred'
-    type:
-      - 'null'
-      - int
-    description: |
-      <int>   Phred penalty for SNP when decoding colorspace (def: 30)
-      or
-    inputBinding:
-      position: 1
-      prefix: '--snpphred'
-  - id: '#snpfrac'
-    type:
-      - 'null'
-      - boolean
-    description: |
-      <dec>    approx. fraction of SNP bases (e.g. 0.001); sets --snpphred
-    inputBinding:
-      position: 1
-      prefix: '--snpfrac'
-  - id: '#col-cseq'
-    type:
-      - 'null'
-      - boolean
-    description: "print aligned colorspace seqs as colors, not decoded bases\n"
-    inputBinding:
-      position: 1
-      prefix: '--col-cseq'
-  - id: '#col-cqual'
-    type:
-      - 'null'
-      - boolean
-    description: "print original colorspace quals, not decoded quals\n"
-    inputBinding:
-      position: 1
-      prefix: '--col-cqual'
-  - id: '#col-keepends'
-    type:
-      - 'null'
-      - boolean
-    description: "keep nucleotides at extreme ends of decoded alignment\nSAM:\n"
-    inputBinding:
-      position: 1
-      prefix: '--col-keepends'
-  - id: '#sam'
-    type:
-      - 'null'
-      - boolean
-    description: |
-      --sam           write hits in SAM format
-    inputBinding:
-      position: 1
-      prefix: '-S'
-  - id: '#mapq'
-    type:
-      - 'null'
-      - int
-    description: |
-      <int>       default mapping quality (MAPQ) to print for SAM alignments
-    inputBinding:
-      position: 1
-      prefix: '--mapq'
-  - id: '#sam-nohead'
-    type:
-      - 'null'
-      - boolean
-    description: "supppress header lines (starting with @) for SAM output\n"
-    inputBinding:
-      position: 1
-      prefix: '--sam-nohead'
-  - id: '#sam-nosq'
-    type:
-      - 'null'
-      - boolean
-    description: "supppress @SQ header lines for SAM output\n"
-    inputBinding:
-      position: 1
-      prefix: '--sam-nosq'
-  - id: '#sam-RG'
-    type:
-      - 'null'
-      - string
-    description: |
-      <text>    add <text> (usually "lab=value") to @RG line of SAM header
-      Performance:
-    inputBinding:
-      position: 1
-      prefix: '--sam-RG'
-  - id: '#o'
-    type:
-      - 'null'
-      - int
-    description: |
-      --offrate <int> override offrate of index; must be >= index's offrate
-    inputBinding:
-      position: 1
-      prefix: '-o'
-  - id: '#p'
-    type:
-      - 'null'
-      - int
-    description: |
-      --threads <int> number of alignment threads to launch (default: 1)
-    inputBinding:
-      position: 1
-      prefix: '-p'
-  - id: '#mm'
-    type:
-      - 'null'
-      - boolean
-    description: "use memory-mapped I/O for index; many 'bowtie's can share\n"
-    inputBinding:
-      position: 1
-      prefix: '--mm'
-  - id: '#shmem'
-    type:
-      - 'null'
-      - boolean
-    description: "use shared mem for index; many 'bowtie's can share\nOther:\n"
-    inputBinding:
-      position: 1
-      prefix: '--shmem'
-  - id: '#seed'
-    type:
-      - 'null'
-      - int
-    description: |
-      <int>       seed for random number generator
-    inputBinding:
-      position: 1
-      prefix: '--seed'
-  - id: '#verbose'
-    type:
-      - 'null'
-      - boolean
-    description: "verbose output (for debugging)\n"
-    inputBinding:
-      position: 1
-      prefix: '--verbose'
-
-outputs:
-  - id: '#output'
-    type: File
-    outputBinding:
-      glob: $(inputs.filename)
-
-  - id: "#output_bowtie_log"
-    type: File
-    outputBinding:
-      glob: $(inputs.filename + '.log’)
-
-baseCommand:
-  - bowtie
-
-arguments:
-  - valueFrom: $('2> ' + inputs.filename + '.log')
-    position: 100000
-    shellQuote: false
-
-description: |
+doc: |
   bowtie.cwl is developed for CWL consortium
 
   Usage: 
@@ -748,22 +90,566 @@ description: |
     --verbose          verbose output (for debugging)
     --version          print version information and quit
     -h/--help          print this usage message
+requirements:
+- $import: envvar-global.yml
+- class: InlineJavascriptRequirement
+- class: ShellCommandRequirement
+- class: DockerRequirement
+  #dockerImageId: scidap/bowtie:v1.1.2 #not yet ready
+  dockerPull: scidap/bowtie:v1.1.2
+  dockerFile: |
+    #################################################################
+    # Dockerfile
+    #
+    # Software:         bowtie
+    # Software Version: 1.1.2
+    # Description:      Bowtie image for SciDAP
+    # Website:          http://bowtie-bio.sourceforge.net, http://scidap.com/
+    # Provides:         bowtie
+    # Base Image:       scidap/scidap:v0.0.1
+    # Build Cmd:        docker build --rm -t scidap/bowtie:v1.1.2 .
+    # Pull Cmd:         docker pull scidap/bowtie:v1.1.2
+    # Run Cmd:          docker run --rm scidap/bowtie:v1.1.2 bowtie
+    #################################################################
 
+    ### Base Image
+    FROM scidap/scidap:v0.0.1
+    MAINTAINER Andrey V Kartashov "porter@porter.st"
+    ENV DEBIAN_FRONTEND noninteractive
+
+    ################## BEGIN INSTALLATION ######################
+
+    WORKDIR /tmp
+
+    ### Installing bowtie
+
+    ENV VERSION 1.1.2
+    ENV NAME bowtie
+    ENV URL "https://github.com/BenLangmead/bowtie/archive/v${VERSION}.tar.gz"
+
+    RUN wget -q -O - $URL | tar -zxv && \
+        cd ${NAME}-${VERSION} && \
+        make -j 4 && \
+        cd .. && \
+        cp ./${NAME}-${VERSION}/${NAME} /usr/local/bin/ && \
+        cp ./${NAME}-${VERSION}/${NAME}-* /usr/local/bin/ && \
+        strip /usr/local/bin/*; true && \
+        rm -rf ./${NAME}-${VERSION}/
+
+inputs:
+  ebwt:
+    doc: |
+      The basename of the index to be searched. The basename is the name of any of the index files up to but not including the final .1.ebwt / .rev.1.ebwt / etc. bowtie looks for the specified index first in the current directory, then in the indexes subdirectory under the directory where the bowtie executable is located, then looks in the directory specified in the BOWTIE_INDEXES environment variable.
+    type: string
+    inputBinding:
+      position: 8
+
+  filelist:
+    doc: |
+      {-1 <m1> -2 <m2> | --12 <r> | <s>}
+      <m1>    Comma-separated list of files containing upstream mates (or the
+            sequences themselves, if -c is set) paired with mates in <m2>
+      <m2>    Comma-separated list of files containing downstream mates (or the
+            sequences themselves if -c is set) paired with mates in <m1>
+      <r>     Comma-separated list of files containing Crossbow-style reads.  Can be
+            a mixture of paired and unpaired.  Specify "-"for stdin.
+      <s>     Comma-separated list of files containing unpaired reads, or the
+            sequences themselves, if -c is set.  Specify "-"for stdin.
+    type:
+      type: array
+      items: File
+    inputBinding:
+      itemSeparator: ","
+      position: 9
+
+  filelist_mates:
+    type: File[]?
+    inputBinding:
+      itemSeparator: ","
+      position: 10
+
+  filename:
+    type: string
+    inputBinding:
+      position: 11
+
+  q:
+    doc: |
+      query input files are FASTQ .fq/.fastq (default)
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '-q'
+
+  f:
+    doc: |
+      query input files are (multi-)FASTA .fa/.mfa
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '-f'
+
+  r:
+    doc: |
+      query input files are raw one-sequence-per-line
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '-r'
+
+  c:
+    doc: |
+      query sequences given on cmd line (as <mates>, <singles>)
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '-c'
+
+  C:
+    doc: |
+      reads and index are in colorspace
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '-C'
+  Q:
+    doc: |
+      --quals <file>  QV file(s) corresponding to CSFASTA inputs; use with -f -C
+    type: File?
+    inputBinding:
+      position: 1
+      prefix: '-Q'
+  Q1:
+    doc: |
+      --Q2 <file>   same as -Q, but for mate files 1 and 2 respectively
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--Q1'
+  s:
+    doc: |
+      --skip <int>    skip the first <int> reads/pairs in the input
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '-s'
+  u:
+    doc: |
+      --qupto <int>   stop after first <int> reads/pairs (excl. skipped reads)
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '-u'
+  '5':
+    doc: |
+      --trim5 <int>   trim <int> bases from 5' (left) end of reads
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '-5'
+  '3':
+    doc: |
+      --trim3 <int>   trim <int> bases from 3' (right) end of reads
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '-3'
+  phred33-quals:
+    doc: |
+      input quals are Phred+33 (default)
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--phred33-quals'
+  phred64-quals:
+    doc: |
+      input quals are Phred+64 (same as --solexa1.3-quals)
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--phred64-quals'
+  solexa-quals:
+    doc: |
+      input quals are from GA Pipeline ver. < 1.3
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--solexa-quals'
+  solexa1.3-quals:
+    doc: |
+      input quals are from GA Pipeline ver. >= 1.3
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--solexa1.3-quals'
+  integer-quals:
+    doc: |
+      qualities are given as space-separated integers (not ASCII)
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--integer-quals'
+  large-index:
+    doc: |
+      force usage of a 'large' index, even if a small one is present
+      Alignment:
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--large-index'
+  v:
+    doc: |
+      <int>           report end-to-end hits w/ <=v mismatches; ignore qualities
+      or
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '-v'
+  n:
+    doc: |
+      --seedmms <int> max mismatches in seed (can be 0-3, default: -n 2)
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '-n'
+  e:
+    doc: |
+      --maqerr <int>  max sum of mismatch quals across alignment for -n (def: 70)
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '-e'
+  l:
+    doc: |
+      --seedlen <int> seed length for -n (default: 28)
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '-l'
+  nomaqround:
+    doc: |
+      disable Maq-like quality rounding for -n (nearest 10 <= 30)
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--nomaqround'
+  I:
+    doc: |
+      --minins <int>  minimum insert size for paired-end alignment (default: 0)
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '-I'
+  X:
+    doc: |
+      --maxins <int>  maximum insert size for paired-end alignment (default: 250)
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '-X'
+  fr:
+    doc: |
+      --rf/--ff     -1, -2 mates align fw/rev, rev/fw, fw/fw (default: --fr)
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--fr'
+  nofw:
+    doc: |
+      --norc      do not align to forward/reverse-complement reference strand
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--nofw'
+  maxbts:
+    doc: |
+      <int>     max # backtracks for -n 2/3 (default: 125, 800 for --best)
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '--maxbts'
+  pairtries:
+    doc: |
+      <int>  max # attempts to find mate for anchor hit (default: 100)
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '--pairtries'
+  y:
+    doc: |
+      --tryhard       try hard to find valid alignments, at the expense of speed
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '-y'
+  chunkmbs:
+    doc: |
+      <int>   max megabytes of RAM for best-first search frames (def: 64)
+      Reporting:
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '--chunkmbs'
+  k:
+    doc: |
+      <int>           report up to <int> good alignments per read (default: 1)
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '-k'
+  a:
+    doc: |
+      --all           report all alignments per read (much slower than low -k)
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '-a'
+  m:
+    doc: |
+      <int>           suppress all alignments if > <int> exist (def: no limit)
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '-m'
+  M:
+    doc: |
+      <int>           like -m, but reports 1 random hit (MAPQ=0); requires --best
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '-M'
+  best:
+    doc: |
+      hits guaranteed best stratum; ties broken by quality
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--best'
+  strata:
+    doc: |
+      hits in sub-optimal strata aren't reported (requires --best)
+      Output:
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--strata'
+  t:
+    doc: |
+      --time          print wall-clock time taken by search phases
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '-t'
+  B:
+    doc: |
+      --offbase <int> leftmost ref offset = <int> in bowtie output (default: 0)
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '-B'
+  quiet:
+    doc: |
+      print nothing but the alignments
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--quiet'
+  refout:
+    doc: |
+      write alignments to files refXXXXX.map, 1 map per reference
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--refout'
+  refidx:
+    doc: |
+      refer to ref. seqs by 0-based index rather than name
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--refidx'
+  al:
+    doc: |
+      <fname>       write aligned reads/pairs to file(s) <fname>
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--al'
+  un:
+    doc: |
+      <fname>       write unaligned reads/pairs to file(s) <fname>
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--un'
+  max:
+    doc: |
+      <fname>      write reads/pairs over -m limit to file(s) <fname>
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--max'
+  suppress:
+    doc: |
+      <cols>  suppresses given columns (comma-delim'ed) in default output
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--suppress'
+  fullref:
+    doc: |
+      write entire ref name (default: only up to 1st space)
+      Colorspace:
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--fullref'
+  snpphred:
+    doc: |
+      <int>   Phred penalty for SNP when decoding colorspace (def: 30)
+      or
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '--snpphred'
+  snpfrac:
+    doc: |
+      <dec>    approx. fraction of SNP bases (e.g. 0.001); sets --snpphred
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--snpfrac'
+  col-cseq:
+    doc: |
+      print aligned colorspace seqs as colors, not decoded bases
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--col-cseq'
+  col-cqual:
+    doc: |
+      print original colorspace quals, not decoded quals
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--col-cqual'
+  col-keepends:
+    doc: |
+      keep nucleotides at extreme ends of decoded alignment
+      SAM:
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--col-keepends'
+  sam:
+    doc: |
+      --sam           write hits in SAM format
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '-S'
+  mapq:
+    doc: |
+      <int>       default mapping quality (MAPQ) to print for SAM alignments
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '--mapq'
+  sam-nohead:
+    doc: |
+      supppress header lines (starting with @) for SAM output
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--sam-nohead'
+  sam-nosq:
+    doc: |
+      supppress @SQ header lines for SAM output
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--sam-nosq'
+  sam-RG:
+    doc: |
+      <text>    add <text> (usually "lab=value") to @RG line of SAM header
+      Performance:
+    type: string?
+    inputBinding:
+      position: 1
+      prefix: '--sam-RG'
+  o:
+    doc: |
+      --offrate <int> override offrate of index; must be >= index's offrate
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '-o'
+  p:
+    doc: |
+      --threads <int> number of alignment threads to launch (default: 1)
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '-p'
+  mm:
+    doc: |
+      use memory-mapped I/O for index; many 'bowtie's can share
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--mm'
+  shmem:
+    doc: |
+      use shared mem for index; many 'bowtie's can share
+      Other:
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--shmem'
+  seed:
+    doc: |
+      <int>       seed for random number generator
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: '--seed'
+  verbose:
+    doc: |
+      verbose output (for debugging)
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: '--verbose'
+
+baseCommand: bowtie
+arguments:
+- valueFrom: $('2> ' + inputs.filename + '.log')
+  position: 100000
+  shellQuote: false
+
+outputs:
+  output:
+    type: File
+    outputBinding:
+      glob: $(inputs.filename)
+
+  output_bowtie_log:
+    type: File
+    outputBinding:
+      glob: $(inputs.filename + '.log')
 
 $namespaces:
   schema: http://schema.org/
 
 $schemas:
-- http://schema.org/docs/schema_org_rdfa.html
+- http://schema.org/version/9.0/schemaorg-current-http.rdf
 
 schema:mainEntity:
 #  $import: https://scidap.com/description/tools/bowtie.yaml
   class: schema:SoftwareSourceCode
   schema:name: "bowtie"
-  schema:about: >
-    Bowtie is an ultrafast, memory-efficient short read aligner.
-    It aligns short DNA sequences (reads) to the human genome at a rate of over 25 million 35-bp reads per hour.
-    Bowtie indexes the genome with a Burrows-Wheeler index to keep its memory footprint small: typically about 2.2 GB for the human genome (2.9 GB for paired-end).
+  schema:about: |
+    Bowtie is an ultrafast, memory-efficient short read aligner. It aligns short DNA sequences (reads) to the human genome at a rate of over 25 million 35-bp reads per hour. Bowtie indexes the genome with a Burrows-Wheeler index to keep its memory footprint small: typically about 2.2 GB for the human genome (2.9 GB for paired-end).
   schema:url: http://bowtie-bio.sourceforge.net
   schema:codeRepository: https://github.com/BenLangmead/bowtie.git
 

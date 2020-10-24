@@ -1,5 +1,5 @@
-  class: DockerRequirement
-  dockerPull: bharath90/superenhancer:v0.1
+class: DockerRequirement
+dockerPull: bharath90/superenhancer:v0.1
   # dockerFile: |
   #   #################################################################
   #   # Dockerfile

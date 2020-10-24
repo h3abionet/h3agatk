@@ -1,120 +1,7 @@
 #!/usr/bin/env cwl-runner
-
-cwlVersion: "cwl:draft-3"
-
+cwlVersion: "v1.0"
 class: CommandLineTool
-
-requirements:
-  - $import: envvar-global.yml
-  - $import: bwa-docker.yml
-  - class: InlineJavascriptRequirement
-
-inputs:
-  - id: "prefix"
-    type: File
-    inputBinding:
-      position: 4
-
-  - id: "input"
-    type: File
-    inputBinding:
-      position: 5
-
-  - id: "output_filename"
-    type: string
-    inputBinding:
-      position: 1
-      prefix: "-f"
-
-  - id: "threads"
-    type: ["null",int]
-    inputBinding:
-      position: 1
-      prefix: "-t"
-
-  - id: "n"
-    type: ["null",int,float]
-    description: |
-      max #diff (int) or missing prob under 0.02 err rate (float) [0.04]
-    inputBinding:
-      position: 1
-      prefix: "-n"
-
-  - id: "o"
-    type: ["null",int]
-    description: |
-      maximum number or fraction of gap opens [1]
-    inputBinding:
-      position: 1
-      prefix: "-o"
-
-  - id: "e"
-    type: ["null",int]
-    description: |
-      maximum number of gap extensions, -1 for disabling long gaps [-1]
-    inputBinding:
-      position: 1
-      prefix: "-e"
-
-  - id: "i"
-    type: ["null",int]
-    description: |
-      do not put an indel within INT bp towards the ends [5]
-    inputBinding:
-      position: 1
-      prefix: "-i"
-
-  - id: "d"
-    type: ["null",int]
-    description: |
-      maximum occurrences for extending a long deletion [10]
-    inputBinding:
-      position: 1
-      prefix: "-d"
-
-  - id: "l"
-    type: ["null",int]
-    description: |
-      seed length [32]
-    inputBinding:
-      position: 1
-      prefix: "-l"
-
-  - id: "k"
-    type: ["null",int]
-    description: |
-      maximum differences in the seed [2]
-    inputBinding:
-      position: 1
-      prefix: "-k"
-
-  - id: "m"
-    type: ["null",int]
-    description: |
-      maximum entries in the queue [2000000]
-    inputBinding:
-      position: 1
-      prefix: "-m"
-
-  - id: "I"
-    type: ["null",boolean]
-    description: |
-      the input is in the Illumina 1.3+ FASTQ-like format
-    inputBinding:
-      position: 1
-      prefix: "-I"
-
-outputs:
-  - id: output
-    type: File
-    outputBinding:
-      glob: $(inputs.output_filename)
-
-baseCommand:
-  - bwa
-  - aln
-
-description: |
+doc: |
   Usage:   bwa aln [options] <prefix> <in.fq>
 
   Options: -n NUM    max #diff (int) or missing prob under 0.02 err rate (float) [0.04]
@@ -141,3 +28,116 @@ description: |
            -0        use single-end reads only (effective with -b)
            -1        use the 1st read in a pair (effective with -b)
            -2        use the 2nd read in a pair (effective with -b)
+requirements:
+- $import: envvar-global.yml
+- $import: bwa-docker.yml
+- class: InlineJavascriptRequirement
+
+inputs:
+  prefix:
+    type: File
+    inputBinding:
+      position: 4
+
+  input:
+    type: File
+    inputBinding:
+      position: 5
+
+  output_filename:
+    type: string
+    inputBinding:
+      position: 1
+      prefix: "-f"
+
+  threads:
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: "-t"
+
+  n:
+    doc: |
+      max #diff (int) or missing prob under 0.02 err rate (float) [0.04]
+    type:
+    - "null"
+    - int
+    - float
+    inputBinding:
+      position: 1
+      prefix: "-n"
+
+  o:
+    doc: |
+      maximum number or fraction of gap opens [1]
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: "-o"
+
+  e:
+    doc: |
+      maximum number of gap extensions, -1 for disabling long gaps [-1]
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: "-e"
+
+  i:
+    doc: |
+      do not put an indel within INT bp towards the ends [5]
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: "-i"
+
+  d:
+    doc: |
+      maximum occurrences for extending a long deletion [10]
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: "-d"
+
+  l:
+    doc: |
+      seed length [32]
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: "-l"
+
+  k:
+    doc: |
+      maximum differences in the seed [2]
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: "-k"
+
+  m:
+    doc: |
+      maximum entries in the queue [2000000]
+    type: int?
+    inputBinding:
+      position: 1
+      prefix: "-m"
+
+  I:
+    doc: |
+      the input is in the Illumina 1.3+ FASTQ-like format
+    type: boolean?
+    inputBinding:
+      position: 1
+      prefix: "-I"
+
+baseCommand:
+- bwa
+- aln
+
+outputs:
+  output:
+    type: File
+    outputBinding:
+      glob: $(inputs.output_filename)
+

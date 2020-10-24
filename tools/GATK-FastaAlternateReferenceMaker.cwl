@@ -1,70 +1,53 @@
 #!/usr/bin/env cwl-runner
-
-cwlVersion: "cwl:draft-3"
-
+cwlVersion: "v1.0"
 class: CommandLineTool
-
-description: |
+doc: |
   GATK-FastaAlternateReferenceMaker.cwl is developed for CWL consortium
-
 requirements:
 - $import: envvar-global.yml
 - $import: GATK-docker.yml
 - class: InlineJavascriptRequirement
 
 inputs:
-- id: "reference"
-  type: File
-  description: |
-    Input reference fasta or fasta.gz
-  inputBinding:
-    prefix: "-R"
-    position: 4
+  reference:
+    doc: |
+      Input reference fasta or fasta.gz
+    type: File
+    inputBinding:
+      prefix: "-R"
+      position: 4
 
-- id: "vcf"
-  type: File
-  description: |
-    Input VCF file
-    Variants from this VCF file are used by this tool as input. The file must at least contain the standard VCF header lines, but can be empty (i.e., no variants are contained in the file).
-    --variant binds reference ordered data. This argument supports ROD files of the following types: BCF2, VCF, VCF3
-  inputBinding:
-    prefix: "-V"
-    position: 4
+  vcf:
+    doc: |
+      Input VCF file
+      Variants from this VCF file are used by this tool as input. The file must at least contain the standard VCF header lines, but can be empty (i.e., no variants are contained in the file).
+      --variant binds reference ordered data. This argument supports ROD files of the following types: BCF2, VCF, VCF3
+    type: File
+    inputBinding:
+      prefix: "-V"
+      position: 4
 
-- id: "intervals"
-  type:
-    - "null"
-    - File
-  inputBinding:
-    prefix: "-L"
-    position: 4
+  intervals:
+    type: File?
+    inputBinding:
+      prefix: "-L"
+      position: 4
 
-- id: "snpmask"
-  type:
-  - "null"
-  - File
-  description: |
-    SNP mask VCF file
-  inputBinding:
-    prefix: "--snpmask"
-    position: 4
+  snpmask:
+    doc: |
+      SNP mask VCF file
+    type: File?
+    inputBinding:
+      prefix: "--snpmask"
+      position: 4
 
-- id: "output_filename"
-  type: string
-  inputBinding:
-    prefix: "-o"
-    position: 4
+  output_filename:
+    type: string
+    inputBinding:
+      prefix: "-o"
+      position: 4
 
-outputs:
-- id: "#output"
-  type: File
-  description: >
-    An output file created by the walker. Will overwrite contents if file exists
-  outputBinding:
-    glob: $(inputs.output_filename)
-
-baseCommand: ["java"]
-
+baseCommand: "java"
 arguments:
 - valueFrom: "-Xmx4g"
   position: 1
@@ -76,11 +59,19 @@ arguments:
   prefix: "-T"
 
 
+outputs:
+  output:
+    doc: |
+      An output file created by the walker. Will overwrite contents if file exists
+    type: File
+    outputBinding:
+      glob: $(inputs.output_filename)
+
 $namespaces:
   schema: http://schema.org/
 
 $schemas:
-- http://schema.org/docs/schema_org_rdfa.html
+- http://schema.org/version/9.0/schemaorg-current-http.rdf
 
 schema:mainEntity:
   $import: GATK-metadata.yaml

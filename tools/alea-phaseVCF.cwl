@@ -1,50 +1,46 @@
 #!/usr/bin/env cwl-runner
-
-cwlVersion: "cwl:draft-3"
-
+cwlVersion: "v1.0"
 class: CommandLineTool
-
 requirements:
-  - $import: envvar-global.yml
-  - $import: alea-docker.yml
-  - class: InlineJavascriptRequirement
+- $import: envvar-global.yml
+- $import: alea-docker.yml
+- class: InlineJavascriptRequirement
 
 inputs:
-  - id: "#hapsDir"
-    type: File
-    description: |
+  hapsDir:
+    doc: |
       path to the directory containing the .haps files
+    type: File
     inputBinding:
       position: 2
 
-  - id: "#unphased"
-    type: File
-    description: |
+  unphased:
+    doc: |
       path to the vcf file containing unphased SNPs and Indels
-    inputBinding:
-      position: 3
-
-  - id: "#outputPrefix"
-    type: string
-    description: |
-      output file prefix including the path but not the extension
-    inputBinding:
-      position: 3
-
-outputs:
-  - id: "#phasevcf"
     type: File
-    description: "Creates the file outputPrefix.vcf.gz"
-    outputBinding:
-      glob: $(inputs.outputPrefix+".vcf.gz")
+    inputBinding:
+      position: 3
+
+  outputPrefix:
+    doc: |
+      output file prefix including the path but not the extension
+    type: string
+    inputBinding:
+      position: 3
 
 baseCommand: ["alea", "phaseVCF"]
+outputs:
+  phasevcf:
+    doc: "Creates the file outputPrefix.vcf.gz"
+    type: File
+    outputBinding:
+      glob: $(inputs.outputPrefix+".vcf.gz")
 
 $namespaces:
   s: http://schema.org/
 
 $schemas:
-- http://schema.org/docs/schema_org_rdfa.html
+- http://schema.org/version/9.0/schemaorg-current-http.rdf
 
 s:mainEntity:
   $import: alea-metadata.yaml

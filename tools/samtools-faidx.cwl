@@ -1,40 +1,25 @@
 #!/usr/bin/env cwl-runner
-#
-# To use it as stand alone tool. The working directory should not have input .fa file
-#    example: "./samtools-faidx.cwl --input=./test-files/mm10.fa"
-# As part of a workflow should be no problem at all
-
-cwlVersion: "cwl:draft-3"
-
+cwlVersion: "v1.0"
 class: CommandLineTool
-
+doc: |
+  samtools-faidx.cwl is developed for CWL consortium
+  Usage:   samtools faidx <file.fa|file.fa.gz> [<reg> [...]]
 requirements:
 - $import: envvar-global.yml
 - $import: samtools-docker.yml
 - class: InlineJavascriptRequirement
-- class: CreateFileRequirement
-  fileDef:
-  - filename: $(inputs.input.path.split('/').slice(-1)[0])
-    fileContent: $(inputs.input)
-
+- class: InitialWorkDirRequirement
+  listing:
+  - entryname: $(inputs.input.path.split('/').slice(-1)[0])
+    entry: $(inputs.input)
 inputs:
-- id: '#input'
-  type: File
-  description: '<file.fa|file.fa.gz>'
-
-- id: '#region'
-  type: ["null",string]
-  inputBinding:
-    position: 2
-
-outputs:
-- id: "#index"
-  type: File
-  outputBinding:
-    glob: $(inputs.input.path.split('/').slice(-1)[0]) #+'.fai')
-  secondaryFiles:
-  - .fai
-  - .gzi
+  input:
+    doc: '<file.fa|file.fa.gz>'
+    type: File
+  region:
+    type: string?
+    inputBinding:
+      position: 2
 
 baseCommand:
 - samtools
@@ -44,15 +29,20 @@ arguments:
 - valueFrom: $(inputs.input.path.split('/').slice(-1)[0])
   position: 1
 
-description: |
-  samtools-faidx.cwl is developed for CWL consortium
-  Usage:   samtools faidx <file.fa|file.fa.gz> [<reg> [...]]
+outputs:
+  index:
+    type: File
+    secondaryFiles:
+    - .fai
+    - .gzi
 
+    outputBinding:
+      glob: $(inputs.input.path.split('/').slice(-1)[0]) #+'.fai')
 $namespaces:
   s: http://schema.org/
 
 $schemas:
-- http://schema.org/docs/schema_org_rdfa.html
+- http://schema.org/version/9.0/schemaorg-current-http.rdf
 
 s:mainEntity:
   $import: samtools-metadata.yaml
@@ -60,7 +50,6 @@ s:mainEntity:
 s:downloadUrl: https://github.com/common-workflow-language/workflows/blob/master/tools/samtools-faidx.cwl
 s:codeRepository: https://github.com/common-workflow-language/workflows
 s:license: http://www.apache.org/licenses/LICENSE-2.0
-
 s:isPartOf:
   class: s:CreativeWork
   s:name: "Common Workflow Language"
