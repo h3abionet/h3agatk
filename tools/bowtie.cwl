@@ -649,7 +649,7 @@ outputs:
   - id: "#output_bowtie_log"
     type: File
     outputBinding:
-      glob: $(inputs.filename + '.log’)
+      glob: $(inputs.filename + '.log')
 
 baseCommand:
   - bowtie
